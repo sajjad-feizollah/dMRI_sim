@@ -95,16 +95,16 @@
             ctx.stroke();
 
             // Parameters for the first Gaussian curve
-            let amplitude1 = 40; // Height of the first Gaussian peak
+            let amplitude1 = 50; // Height of the first Gaussian peak
             let mean1 = 100; // Center of the first Gaussian curve
-            let stdDev1 = 30; // Standard deviation (controls the width of the curve)
+            let stdDev1 = 5; // Standard deviation for the first Gaussian curve
 
-            // Draw the first Gaussian curve (blue)
+            // Draw the first Gaussian curve (black)
             ctx.beginPath();
-            ctx.strokeStyle = "blue";
+            ctx.strokeStyle = "black";
             ctx.lineWidth = 2;
 
-            for (let x = 50; x < 200; x++) {
+            for (let x = 50; x < 150; x++) {
                 let y = gaussian(x, amplitude1, mean1, stdDev1);
                 if (x === 50) {
                     ctx.moveTo(x, lineY - y);
@@ -115,14 +115,35 @@
             ctx.stroke();
 
             // Start the first trapezoid right after the first Gaussian
-            let startX1 = 200;
+            let startX1 = 150;
 
             // Calculate the positions and sizes of the trapezoids
             let trapezoidHeight = 40;
             let distanceBetweenTrapezoids = te; // TE value sets the distance between trapezoids
 
-            // Second trapezoid position (distance determined by TE)
-            let startX2 = startX1 + smallDelta + distanceBetweenTrapezoids;
+            // Parameters for the second Gaussian curve (double amplitude)
+            let amplitude2 = amplitude1 * 2; // Double the amplitude of the first Gaussian
+            let mean2 = startX1 + smallDelta + distanceBetweenTrapezoids / 2; // Center between the two trapezoids
+            let stdDev2 = 5; // Standard deviation for the second Gaussian curve
+
+            // Draw the second Gaussian curve (black)
+            let secondGaussianEndX = startX1 + smallDelta + distanceBetweenTrapezoids;
+            ctx.beginPath();
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 2;
+
+            for (let x = startX1 + smallDelta; x < secondGaussianEndX; x++) {
+                let y = gaussian(x, amplitude2, mean2, stdDev2);
+                if (x === startX1 + smallDelta) {
+                    ctx.moveTo(x, lineY - y);
+                } else {
+                    ctx.lineTo(x, lineY - y);
+                }
+            }
+            ctx.stroke();
+
+            // Start the second trapezoid right after the second Gaussian curve
+            let startX2 = secondGaussianEndX;
 
             // Draw the first trapezoid (Small Delta) without filling and red border
             ctx.beginPath();
@@ -144,26 +165,6 @@
             ctx.closePath();
             ctx.strokeStyle = "red"; // Red outline
             ctx.lineWidth = 2;
-            ctx.stroke();
-
-            // Parameters for the second Gaussian curve (double amplitude)
-            let amplitude2 = amplitude1 * 2; // Double the amplitude of the first Gaussian
-            let mean2 = startX1 + smallDelta + (startX2 - startX1 - smallDelta) / 2; // Center between the two trapezoids
-            let stdDev2 = stdDev1; // Same standard deviation
-
-            // Draw the second Gaussian curve (red)
-            ctx.beginPath();
-            ctx.strokeStyle = "red";
-            ctx.lineWidth = 2;
-
-            for (let x = startX1 + smallDelta; x < startX2; x++) {
-                let y = gaussian(x, amplitude2, mean2, stdDev2);
-                if (x === startX1 + smallDelta) {
-                    ctx.moveTo(x, lineY - y);
-                } else {
-                    ctx.lineTo(x, lineY - y);
-                }
-            }
             ctx.stroke();
         }
     </script>
