@@ -113,27 +113,29 @@
             }
             ctx.stroke();
 
-            // Start the first trapezoid right after the first Gaussian
-            let startX1 = 150;
+            // Calculate the positions and sizes of the trapezoids
             let trapezoidHeight = 80; // Doubled height of the trapezoid
 
-            // Calculate the positions and sizes of the trapezoids
-            let distanceBetweenTrapezoids = te; // TE value sets the distance between trapezoids
+            // TE determines the distance from the center of the first Gaussian to the end of the EPI readout
+            let epiEndX = mean1 + te;
+
+            // Calculate the EPI readout start position
+            let epiStartX = epiEndX - epiTrainLength;
 
             // Parameters for the second Gaussian curve (double amplitude)
             let amplitude2 = amplitude1 * 2; // Double the amplitude of the first Gaussian
-            let mean2 = startX1 + smallDelta + distanceBetweenTrapezoids / 2; // Center between the two trapezoids
+            let mean2 = epiStartX - smallDelta - 30; // Center the second Gaussian before the EPI readout
             let stdDev2 = 15; // Same standard deviation for the second Gaussian curve
 
             // Draw the second Gaussian curve (black)
-            let secondGaussianEndX = startX1 + smallDelta + distanceBetweenTrapezoids;
+            let secondGaussianEndX = mean2 + stdDev2 * 3; // Approximate end of the second Gaussian
             ctx.beginPath();
             ctx.strokeStyle = "black";
             ctx.lineWidth = 2;
 
-            for (let x = startX1 + smallDelta; x < secondGaussianEndX; x++) {
+            for (let x = mean2 - stdDev2 * 3; x < secondGaussianEndX; x++) {
                 let y = gaussian(x, amplitude2, mean2, stdDev2);
-                if (x === startX1 + smallDelta) {
+                if (x === mean2 - stdDev2 * 3) {
                     ctx.moveTo(x, lineY - y);
                 } else {
                     ctx.lineTo(x, lineY - y);
@@ -141,8 +143,8 @@
             }
             ctx.stroke();
 
-            // Start the second trapezoid right after the second Gaussian curve
-            let startX2 = secondGaussianEndX;
+            // Start the first trapezoid right after the first Gaussian
+            let startX1 = 150;
 
             // Draw the first trapezoid (Small Delta) without filling and red border
             ctx.beginPath();
@@ -154,6 +156,9 @@
             ctx.strokeStyle = "red"; // Red outline
             ctx.lineWidth = 2;
             ctx.stroke();
+
+            // Start the second trapezoid right after the second Gaussian curve
+            let startX2 = secondGaussianEndX;
 
             // Draw the second trapezoid (Small Delta) without filling and red border
             ctx.beginPath();
@@ -167,7 +172,6 @@
             ctx.stroke();
 
             // EPI Readout (four small trapezoids)
-            let epiStartX = startX2 + smallDelta + 10; // Starting point for the EPI readout trapezoids
             let epiTrapezoidWidth = epiTrainLength / 4; // Width of each small trapezoid
             let epiTrapezoidHeight = trapezoidHeight / 2; // Half the height of the big trapezoid
 
@@ -192,7 +196,7 @@
                 ctx.stroke();
 
                 // Move the start position for the next trapezoid
-                epiStartX += epiTrapezoidWidth + 5;
+                epiStartX += epiTrapezoidWidth;
             }
         }
     </script>
