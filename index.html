@@ -48,8 +48,8 @@
 
     <div class="container">
         <h1>Trapezoid Plotter</h1>
-        <label for="echoSpacing">Echo Spacing: </label>
-        <input type="number" id="echoSpacing" placeholder="Enter Echo Spacing">
+        <label for="smallDelta">Small Delta: </label>
+        <input type="number" id="smallDelta" placeholder="Enter Small Delta">
         <br>
         <label for="te">TE: </label>
         <input type="number" id="te" placeholder="Enter TE">
@@ -57,18 +57,18 @@
         <button onclick="drawTrapezoids()">Plot Trapezoids</button>
 
         <div id="canvasContainer">
-            <canvas id="trapezoidCanvas" width="600" height="300"></canvas>
+            <canvas id="trapezoidCanvas" width="800" height="300"></canvas>
         </div>
     </div>
 
     <script>
         function drawTrapezoids() {
             // Get the input values
-            let echoSpacing = document.getElementById('echoSpacing').value;
+            let smallDelta = document.getElementById('smallDelta').value;
             let te = document.getElementById('te').value;
 
             // Convert to integers
-            echoSpacing = parseInt(echoSpacing);
+            smallDelta = parseInt(smallDelta);
             te = parseInt(te);
 
             // Get the canvas element and context
@@ -78,35 +78,43 @@
             // Clear previous drawings
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Set the base Y positions
-            let baseY1 = 100;
-            let baseY2 = 200;
+            // Set the line position (horizontal black line)
+            let lineY = 150;
 
-            // Calculate the trapezoid parameters
-            let height = 40; // Height of the trapezoids
-            let baseWidth1 = echoSpacing;
-            let baseWidth2 = te;
-
-            // Set start X positions for the trapezoids
-            let startX1 = (canvas.width - baseWidth1) / 2;
-            let startX2 = (canvas.width - baseWidth2) / 2;
-
-            // Draw the first trapezoid (Echo Spacing)
+            // Draw the horizontal black line
             ctx.beginPath();
-            ctx.moveTo(startX1, baseY1); // Bottom-left corner
-            ctx.lineTo(startX1 + baseWidth1, baseY1); // Bottom-right corner
-            ctx.lineTo(startX1 + (baseWidth1 * 0.7), baseY1 - height); // Top-right corner
-            ctx.lineTo(startX1 + (baseWidth1 * 0.3), baseY1 - height); // Top-left corner
+            ctx.moveTo(50, lineY);
+            ctx.lineTo(canvas.width - 50, lineY);
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Calculate the positions and sizes of the trapezoids
+            let trapezoidHeight = 40;
+            let distanceBetweenTrapezoids = te; // TE value sets the distance between trapezoids
+
+            // First trapezoid position (centered horizontally)
+            let startX1 = (canvas.width - 2 * smallDelta - distanceBetweenTrapezoids) / 2;
+
+            // Second trapezoid position (distance determined by TE)
+            let startX2 = startX1 + smallDelta + distanceBetweenTrapezoids;
+
+            // Draw the first trapezoid (Small Delta)
+            ctx.beginPath();
+            ctx.moveTo(startX1, lineY); // Bottom-left corner
+            ctx.lineTo(startX1 + smallDelta, lineY); // Bottom-right corner
+            ctx.lineTo(startX1 + (smallDelta * 0.7), lineY - trapezoidHeight); // Top-right corner
+            ctx.lineTo(startX1 + (smallDelta * 0.3), lineY - trapezoidHeight); // Top-left corner
             ctx.closePath();
             ctx.fillStyle = "#4CAF50";
             ctx.fill();
 
-            // Draw the second trapezoid (TE)
+            // Draw the second trapezoid (Small Delta)
             ctx.beginPath();
-            ctx.moveTo(startX2, baseY2); // Bottom-left corner
-            ctx.lineTo(startX2 + baseWidth2, baseY2); // Bottom-right corner
-            ctx.lineTo(startX2 + (baseWidth2 * 0.7), baseY2 - height); // Top-right corner
-            ctx.lineTo(startX2 + (baseWidth2 * 0.3), baseY2 - height); // Top-left corner
+            ctx.moveTo(startX2, lineY); // Bottom-left corner
+            ctx.lineTo(startX2 + smallDelta, lineY); // Bottom-right corner
+            ctx.lineTo(startX2 + (smallDelta * 0.7), lineY - trapezoidHeight); // Top-right corner
+            ctx.lineTo(startX2 + (smallDelta * 0.3), lineY - trapezoidHeight); // Top-left corner
             ctx.closePath();
             ctx.fillStyle = "#FF5733";
             ctx.fill();
