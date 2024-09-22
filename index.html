@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trapezoid Plotter with Inverted x^6 Curves</title>
+    <title>Trapezoid Plotter with Inverted x^2 Curves</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -46,7 +46,7 @@
 <body>
 
     <div class="container">
-        <h1>Trapezoid Plotter with Inverted x^6 Curves</h1>
+        <h1>Trapezoid Plotter with Inverted x^2 Curves</h1>
         <label for="smallDelta">Small Delta: </label>
         <input type="number" id="smallDelta" placeholder="Enter Small Delta">
         <br>
@@ -61,9 +61,9 @@
     </div>
 
     <script>
-        function invertedX6(x, a, center, b, peakHeight) {
-            // Inverted x^6 function: -a * ((x - center)^6 / b^6) + peakHeight
-            return -a * Math.pow((x - center) / b, 6) + peakHeight;
+        function invertedX2(x, a, center, peakHeight) {
+            // Inverted x^2 function: -a * (x - center)^2 + peakHeight
+            return -a * Math.pow(x - center, 2) + peakHeight;
         }
 
         function drawTrapezoids() {
@@ -93,19 +93,18 @@
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            // Parameters for the first inverted x^6 curve
-            let a1 = 50; // Controls the steepness
+            // Parameters for the first inverted x^2 curve
+            let a1 = 0.02; // Controls the steepness of the parabola
             let center1 = 100; // The x-coordinate of the peak
-            let b1 = 20; // Controls the width of the curve
             let peakHeight1 = 50; // The y-coordinate of the peak
 
-            // Draw the first inverted x^6 curve
+            // Draw the first inverted x^2 curve
             ctx.beginPath();
             ctx.strokeStyle = "black";
             ctx.lineWidth = 2;
 
             for (let x = 50; x < 150; x++) {
-                let y = invertedX6(x, a1, center1, b1, lineY - peakHeight1);
+                let y = invertedX2(x, a1, center1, lineY - peakHeight1);
                 if (x === 50) {
                     ctx.moveTo(x, y);
                 } else {
@@ -121,20 +120,19 @@
             let trapezoidHeight = 40;
             let distanceBetweenTrapezoids = te; // TE value sets the distance between trapezoids
 
-            // Parameters for the second inverted x^6 curve (double steepness)
-            let a2 = 100; // Double the steepness of the first curve
+            // Parameters for the second inverted x^2 curve
+            let a2 = 0.02; // Steepness for the second curve
             let center2 = startX1 + smallDelta + distanceBetweenTrapezoids / 2; // Center between the two trapezoids
-            let b2 = 20; // Width of the second curve
             let peakHeight2 = 80; // The y-coordinate of the second peak
 
-            // Draw the second inverted x^6 curve
+            // Draw the second inverted x^2 curve
             let secondCurveEndX = startX1 + smallDelta + distanceBetweenTrapezoids;
             ctx.beginPath();
             ctx.strokeStyle = "black";
             ctx.lineWidth = 2;
 
             for (let x = startX1 + smallDelta; x < secondCurveEndX; x++) {
-                let y = invertedX6(x, a2, center2, b2, lineY - peakHeight2);
+                let y = invertedX2(x, a2, center2, lineY - peakHeight2);
                 if (x === startX1 + smallDelta) {
                     ctx.moveTo(x, y);
                 } else {
