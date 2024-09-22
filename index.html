@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trapezoid Plotter with Gaussian Curves</title>
+    <title>Trapezoid Plotter with Gaussian Curves and EPI Readout</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -46,12 +46,15 @@
 <body>
 
     <div class="container">
-        <h1>Trapezoid Plotter with Gaussian Curves</h1>
+        <h1>Trapezoid Plotter with EPI Readout</h1>
         <label for="smallDelta">Small Delta: </label>
         <input type="number" id="smallDelta" placeholder="Enter Small Delta">
         <br>
         <label for="te">TE: </label>
         <input type="number" id="te" placeholder="Enter TE">
+        <br>
+        <label for="epiTrainLength">EPI Train Length: </label>
+        <input type="number" id="epiTrainLength" placeholder="Enter EPI Train Length">
         <br>
         <button onclick="drawTrapezoids()">Plot Trapezoids</button>
 
@@ -68,12 +71,9 @@
 
         function drawTrapezoids() {
             // Get the input values
-            let smallDelta = document.getElementById('smallDelta').value;
-            let te = document.getElementById('te').value;
-
-            // Convert to integers
-            smallDelta = parseInt(smallDelta);
-            te = parseInt(te);
+            let smallDelta = parseInt(document.getElementById('smallDelta').value);
+            let te = parseInt(document.getElementById('te').value);
+            let epiTrainLength = parseInt(document.getElementById('epiTrainLength').value);
 
             // Get the canvas element and context
             let canvas = document.getElementById('trapezoidCanvas');
@@ -115,9 +115,9 @@
 
             // Start the first trapezoid right after the first Gaussian
             let startX1 = 150;
+            let trapezoidHeight = 80; // Doubled height of the trapezoid
 
             // Calculate the positions and sizes of the trapezoids
-            let trapezoidHeight = 40;
             let distanceBetweenTrapezoids = te; // TE value sets the distance between trapezoids
 
             // Parameters for the second Gaussian curve (double amplitude)
@@ -155,7 +155,7 @@
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            // Draw the second trapezoid (Small Delta) right after the second Gaussian curve, without filling and red border
+            // Draw the second trapezoid (Small Delta) without filling and red border
             ctx.beginPath();
             ctx.moveTo(startX2, lineY); // Bottom-left corner
             ctx.lineTo(startX2 + smallDelta, lineY); // Bottom-right corner
@@ -165,6 +165,26 @@
             ctx.strokeStyle = "red"; // Red outline
             ctx.lineWidth = 2;
             ctx.stroke();
+
+            // EPI Readout (four small trapezoids)
+            let epiStartX = startX2 + smallDelta + 10; // Starting point for the EPI readout trapezoids
+            let epiTrapezoidWidth = epiTrainLength / 4; // Width of each small trapezoid
+            let epiTrapezoidHeight = trapezoidHeight / 2; // Half the height of the big trapezoid
+
+            for (let i = 0; i < 4; i++) {
+                ctx.beginPath();
+                ctx.moveTo(epiStartX, lineY); // Bottom-left corner
+                ctx.lineTo(epiStartX + epiTrapezoidWidth, lineY); // Bottom-right corner
+                ctx.lineTo(epiStartX + (epiTrapezoidWidth * 0.7), lineY - epiTrapezoidHeight); // Top-right corner
+                ctx.lineTo(epiStartX + (epiTrapezoidWidth * 0.3), lineY - epiTrapezoidHeight); // Top-left corner
+                ctx.closePath();
+                ctx.strokeStyle = "blue"; // Blue outline for EPI readout
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Move the start position for the next trapezoid
+                epiStartX += epiTrapezoidWidth + 5;
+            }
         }
     </script>
 
