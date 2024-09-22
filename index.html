@@ -43,7 +43,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="initializeValues()">
 
     <div class="container">
         <h1>Trapezoid Plotter with EPI Readout</h1>
@@ -51,7 +51,7 @@
         <input type="number" id="smallDelta" placeholder="Enter Small Delta">
         <br>
         <label for="te">TE: </label>
-        <input type="number" id="te" placeholder="Enter TE">
+        <input type="number" id="te" placeholder="Minimum TE" readonly>
         <br>
         <label for="epiTrainLength">EPI Train Length: </label>
         <input type="number" id="epiTrainLength" placeholder="Enter EPI Train Length">
@@ -64,6 +64,25 @@
     </div>
 
     <script>
+        function initializeValues() {
+            // Initialize input values when the page loads
+            document.getElementById('smallDelta').value = 50;
+            document.getElementById('epiTrainLength').value = 200;
+            calculateMinimumTE(); // Calculate and set the minimum TE
+        }
+
+        function calculateMinimumTE() {
+            // Get the initial values for smallDelta and epiTrainLength
+            let smallDelta = parseInt(document.getElementById('smallDelta').value);
+            let epiTrainLength = parseInt(document.getElementById('epiTrainLength').value);
+
+            // Calculate minimum TE required
+            let minimumTE = smallDelta + epiTrainLength;
+
+            // Set the TE value in the input box
+            document.getElementById('te').value = minimumTE;
+        }
+
         function gaussian(x, amplitude, mean, stdDev) {
             // Gaussian formula: f(x) = A * exp(-(x - mean)^2 / (2 * stdDev^2))
             return amplitude * Math.exp(-Math.pow(x - mean, 2) / (2 * Math.pow(stdDev, 2)));
