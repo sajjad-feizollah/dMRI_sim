@@ -95,9 +95,9 @@
             ctx.stroke();
 
             // Parameters for the first Gaussian curve
-            let amplitude1 = 50; // Height of the first Gaussian peak
+            let amplitude1 = 40; // Height of the first Gaussian peak
             let mean1 = 100; // Center of the first Gaussian curve
-            let stdDev1 = 5; // Standard deviation (controls the width of the curve)
+            let stdDev1 = 30; // Standard deviation (controls the width of the curve)
 
             // Draw the first Gaussian curve (blue)
             ctx.beginPath();
@@ -114,35 +114,37 @@
             }
             ctx.stroke();
 
+            // Start the first trapezoid right after the first Gaussian
+            let startX1 = 200;
+
             // Calculate the positions and sizes of the trapezoids
             let trapezoidHeight = 40;
             let distanceBetweenTrapezoids = te; // TE value sets the distance between trapezoids
 
-            // First trapezoid position (centered horizontally)
-            let startX1 = (canvas.width - 2 * smallDelta - distanceBetweenTrapezoids) / 2;
-
             // Second trapezoid position (distance determined by TE)
             let startX2 = startX1 + smallDelta + distanceBetweenTrapezoids;
 
-            // Draw the first trapezoid (Small Delta)
+            // Draw the first trapezoid (Small Delta) without filling and red border
             ctx.beginPath();
             ctx.moveTo(startX1, lineY); // Bottom-left corner
             ctx.lineTo(startX1 + smallDelta, lineY); // Bottom-right corner
             ctx.lineTo(startX1 + (smallDelta * 0.7), lineY - trapezoidHeight); // Top-right corner
             ctx.lineTo(startX1 + (smallDelta * 0.3), lineY - trapezoidHeight); // Top-left corner
             ctx.closePath();
-            ctx.fillStyle = "#4CAF50";
-            ctx.fill();
+            ctx.strokeStyle = "red"; // Red outline
+            ctx.lineWidth = 2;
+            ctx.stroke();
 
-            // Draw the second trapezoid (Small Delta)
+            // Draw the second trapezoid (Small Delta) without filling and red border
             ctx.beginPath();
             ctx.moveTo(startX2, lineY); // Bottom-left corner
             ctx.lineTo(startX2 + smallDelta, lineY); // Bottom-right corner
             ctx.lineTo(startX2 + (smallDelta * 0.7), lineY - trapezoidHeight); // Top-right corner
             ctx.lineTo(startX2 + (smallDelta * 0.3), lineY - trapezoidHeight); // Top-left corner
             ctx.closePath();
-            ctx.fillStyle = "#FF5733";
-            ctx.fill();
+            ctx.strokeStyle = "red"; // Red outline
+            ctx.lineWidth = 2;
+            ctx.stroke();
 
             // Parameters for the second Gaussian curve (double amplitude)
             let amplitude2 = amplitude1 * 2; // Double the amplitude of the first Gaussian
