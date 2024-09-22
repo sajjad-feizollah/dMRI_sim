@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trapezoid Plotter with Sharp Gaussian Curves</title>
+    <meta charset="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trapezoid Plotter with Inverted x^6 Curves</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,7 +46,7 @@
 <body>
 
     <div class="container">
-        <h1>Trapezoid Plotter with Sharp Gaussian Curves</h1>
+        <h1>Trapezoid Plotter with Inverted x^6 Curves</h1>
         <label for="smallDelta">Small Delta: </label>
         <input type="number" id="smallDelta" placeholder="Enter Small Delta">
         <br>
@@ -62,9 +61,9 @@
     </div>
 
     <script>
-        function gaussian(x, amplitude, mean, stdDev) {
-            // Gaussian formula: f(x) = A * exp(-(x - mean)^2 / (2 * stdDev^2))
-            return amplitude * Math.exp(-Math.pow(x - mean, 2) / (2 * Math.pow(stdDev, 2)));
+        function invertedX6(x, a, center, b, peakHeight) {
+            // Inverted x^6 function: -a * ((x - center)^6 / b^6) + peakHeight
+            return -a * Math.pow((x - center) / b, 6) + peakHeight;
         }
 
         function drawTrapezoids() {
@@ -94,56 +93,58 @@
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            // Parameters for the first Gaussian curve
-            let amplitude1 = 50; // Height of the first Gaussian peak
-            let mean1 = 100; // Center of the first Gaussian curve
-            let stdDev1 = 2; // Smaller standard deviation for sharper rise and fall
+            // Parameters for the first inverted x^6 curve
+            let a1 = 50; // Controls the steepness
+            let center1 = 100; // The x-coordinate of the peak
+            let b1 = 20; // Controls the width of the curve
+            let peakHeight1 = 50; // The y-coordinate of the peak
 
-            // Draw the first Gaussian curve (black)
+            // Draw the first inverted x^6 curve
             ctx.beginPath();
             ctx.strokeStyle = "black";
             ctx.lineWidth = 2;
 
             for (let x = 50; x < 150; x++) {
-                let y = gaussian(x, amplitude1, mean1, stdDev1);
+                let y = invertedX6(x, a1, center1, b1, lineY - peakHeight1);
                 if (x === 50) {
-                    ctx.moveTo(x, lineY - y);
+                    ctx.moveTo(x, y);
                 } else {
-                    ctx.lineTo(x, lineY - y);
+                    ctx.lineTo(x, y);
                 }
             }
             ctx.stroke();
 
-            // Start the first trapezoid right after the first Gaussian
+            // Start the first trapezoid right after the first curve
             let startX1 = 150;
 
             // Calculate the positions and sizes of the trapezoids
             let trapezoidHeight = 40;
             let distanceBetweenTrapezoids = te; // TE value sets the distance between trapezoids
 
-            // Parameters for the second Gaussian curve (double amplitude)
-            let amplitude2 = amplitude1 * 2; // Double the amplitude of the first Gaussian
-            let mean2 = startX1 + smallDelta + distanceBetweenTrapezoids / 2; // Center between the two trapezoids
-            let stdDev2 = 2; // Smaller standard deviation for sharper rise and fall in second Gaussian
+            // Parameters for the second inverted x^6 curve (double steepness)
+            let a2 = 100; // Double the steepness of the first curve
+            let center2 = startX1 + smallDelta + distanceBetweenTrapezoids / 2; // Center between the two trapezoids
+            let b2 = 20; // Width of the second curve
+            let peakHeight2 = 80; // The y-coordinate of the second peak
 
-            // Draw the second Gaussian curve (black)
-            let secondGaussianEndX = startX1 + smallDelta + distanceBetweenTrapezoids;
+            // Draw the second inverted x^6 curve
+            let secondCurveEndX = startX1 + smallDelta + distanceBetweenTrapezoids;
             ctx.beginPath();
             ctx.strokeStyle = "black";
             ctx.lineWidth = 2;
 
-            for (let x = startX1 + smallDelta; x < secondGaussianEndX; x++) {
-                let y = gaussian(x, amplitude2, mean2, stdDev2);
+            for (let x = startX1 + smallDelta; x < secondCurveEndX; x++) {
+                let y = invertedX6(x, a2, center2, b2, lineY - peakHeight2);
                 if (x === startX1 + smallDelta) {
-                    ctx.moveTo(x, lineY - y);
+                    ctx.moveTo(x, y);
                 } else {
-                    ctx.lineTo(x, lineY - y);
+                    ctx.lineTo(x, y);
                 }
             }
             ctx.stroke();
 
-            // Start the second trapezoid right after the second Gaussian curve
-            let startX2 = secondGaussianEndX;
+            // Start the second trapezoid right after the second curve
+            let startX2 = secondCurveEndX;
 
             // Draw the first trapezoid (Small Delta) without filling and red border
             ctx.beginPath();
