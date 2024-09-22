@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trapezoid Plotter with Double Gaussian Curves</title>
+    <title>Trapezoid Plotter with Sharp Gaussian Curves</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,7 +47,7 @@
 <body>
 
     <div class="container">
-        <h1>Trapezoid Plotter with Double Gaussian Curves</h1>
+        <h1>Trapezoid Plotter with Sharp Gaussian Curves</h1>
         <label for="smallDelta">Small Delta: </label>
         <input type="number" id="smallDelta" placeholder="Enter Small Delta">
         <br>
@@ -97,7 +97,7 @@
             // Parameters for the first Gaussian curve
             let amplitude1 = 50; // Height of the first Gaussian peak
             let mean1 = 100; // Center of the first Gaussian curve
-            let stdDev1 = 5; // Standard deviation for the first Gaussian curve
+            let stdDev1 = 2; // Smaller standard deviation for sharper rise and fall
 
             // Draw the first Gaussian curve (black)
             ctx.beginPath();
@@ -124,7 +124,7 @@
             // Parameters for the second Gaussian curve (double amplitude)
             let amplitude2 = amplitude1 * 2; // Double the amplitude of the first Gaussian
             let mean2 = startX1 + smallDelta + distanceBetweenTrapezoids / 2; // Center between the two trapezoids
-            let stdDev2 = 5; // Standard deviation for the second Gaussian curve
+            let stdDev2 = 2; // Smaller standard deviation for sharper rise and fall in second Gaussian
 
             // Draw the second Gaussian curve (black)
             let secondGaussianEndX = startX1 + smallDelta + distanceBetweenTrapezoids;
