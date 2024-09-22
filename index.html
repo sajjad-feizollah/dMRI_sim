@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trapezoid Plotter with Gaussian Curve</title>
+    <title>Trapezoid Plotter with Double Gaussian Curves</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,7 +47,7 @@
 <body>
 
     <div class="container">
-        <h1>Trapezoid Plotter with Gaussian Curve</h1>
+        <h1>Trapezoid Plotter with Double Gaussian Curves</h1>
         <label for="smallDelta">Small Delta: </label>
         <input type="number" id="smallDelta" placeholder="Enter Small Delta">
         <br>
@@ -94,17 +94,18 @@
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            // Draw Gaussian curve at the beginning of the line
-            let amplitude = 50; // Height of the Gaussian peak
-            let mean = 100; // Center of the Gaussian curve
-            let stdDev = 5; // Standard deviation (controls the width of the curve)
+            // Parameters for the first Gaussian curve
+            let amplitude1 = 50; // Height of the first Gaussian peak
+            let mean1 = 100; // Center of the first Gaussian curve
+            let stdDev1 = 5; // Standard deviation (controls the width of the curve)
 
+            // Draw the first Gaussian curve (blue)
             ctx.beginPath();
             ctx.strokeStyle = "blue";
             ctx.lineWidth = 2;
 
             for (let x = 50; x < 200; x++) {
-                let y = gaussian(x, amplitude, mean, stdDev);
+                let y = gaussian(x, amplitude1, mean1, stdDev1);
                 if (x === 50) {
                     ctx.moveTo(x, lineY - y);
                 } else {
@@ -142,6 +143,26 @@
             ctx.closePath();
             ctx.fillStyle = "#FF5733";
             ctx.fill();
+
+            // Parameters for the second Gaussian curve (double amplitude)
+            let amplitude2 = amplitude1 * 2; // Double the amplitude of the first Gaussian
+            let mean2 = startX1 + smallDelta + (startX2 - startX1 - smallDelta) / 2; // Center between the two trapezoids
+            let stdDev2 = stdDev1; // Same standard deviation
+
+            // Draw the second Gaussian curve (red)
+            ctx.beginPath();
+            ctx.strokeStyle = "red";
+            ctx.lineWidth = 2;
+
+            for (let x = startX1 + smallDelta; x < startX2; x++) {
+                let y = gaussian(x, amplitude2, mean2, stdDev2);
+                if (x === startX1 + smallDelta) {
+                    ctx.moveTo(x, lineY - y);
+                } else {
+                    ctx.lineTo(x, lineY - y);
+                }
+            }
+            ctx.stroke();
         }
     </script>
 
