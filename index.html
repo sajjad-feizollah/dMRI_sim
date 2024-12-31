@@ -3,7 +3,22 @@
 <head>
     <meta charset="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diffusion-weighted sequence diagram plotter</title>
-    <style>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diffusion-weighted sequence diagram plotter</title>
+    <style>        
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+    }
+
     .container {
         text-align: left;
         background-color: #fff;
@@ -19,7 +34,8 @@
     }
 
     label, input, select, button {
-        display: inline-block; /* Corrected syntax */
+        display: in-line block;
+        width: 6%; 
         margin-bottom: 15px;
     }
 
@@ -28,11 +44,10 @@
         font-size: 1em;
         border: 1px solid #ccc;
         border-radius: 5px;
-        width: calc(20% - 20px); /* Responsive width */
     }
-
+    
     select {
-        width: calc(20% - 20px); /* Same width as inputs */
+      width: 12%;
     }
 
     button {
@@ -43,23 +58,21 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        width: 100%; /* Full-width button */
+        width: 25%;
     }
 
     button:hover {
-        background-color: #45a049;
+        background-color: #45a049; 
     }
 
     #canvasContainer {
         margin-top: 20px;
-        text-align: center;
+        text-align: center; 
     }
 
     canvas {
         background-color: white;
         border: 1px solid black;
-        max-width: 100%; /* Prevent canvas overflow */
-        height: auto; /* Maintain aspect ratio */
     }
 
     @media (max-width: 768px) {
