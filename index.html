@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trapezoid Plotter with Gaussian Curves and EPI Readout</title>
+    <title>Diffusion-weighted sequence diagram plotter</title>
     <style>
     body {
         font-family: Arial, sans-serif;
@@ -30,7 +30,7 @@
 
     label, input, select, button {
         display: in-line block; /* Stack elements vertically */
-        width: 10%; /* Make elements full-width */
+        width: 6%; /* Make elements full-width */
         margin-bottom: 15px; /* Add space between form elements */
     }
 
@@ -39,6 +39,10 @@
         font-size: 1em;
         border: 1px solid #ccc;
         border-radius: 5px; /* Slightly rounded corners for inputs */
+    }
+    
+    select {
+      width: 12%;
     }
 
     button {
@@ -49,7 +53,7 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        width: 40%;
+        width: 25%;
     }
 
     button:hover {
@@ -78,18 +82,30 @@
         
         <label for="echoSpacing">Echo spacing: </label>
         <input type="number" step="0.1" id="echoSpacing" placeholder="Enter echo spacing" oninput="calculateMinimumTE()">
+        <label for="echoSpacing">ms</label>
+        <br>
+        
+        <label for="PF">Partial Fourier:</label>
+        <select id="PF" name="PF">
+          <option value="0.0">None</option>
+          <option value="0.128">7/8 (87%)</option>
+          <option value="0.25">6/8 (75%)</option>
+        </select>
         <br>
         
         <label for="te">TE: </label>
         <input type="number" id="te" placeholder="Enter TE">
+        <label for="echoSpacing">ms</label>
         <br>
         
         <label for="smallDelta">Small Delta (&#948;): </label>
         <input type="number" id="smallDelta" placeholder="Enter Small Delta" oninput="calculateMinimumTE()">
+        <label for="echoSpacing">ms</label>
         <br>
         
         <label for="bigDelta">Big Delta (&#916;): </label>
         <input type="number" id="bigDelta" placeholder="Enter Big Delta" oninput="calculateMinimumTE()">
+        <label for="echoSpacing">ms</label>
         <br>
         
         <button onclick="drawDiagram()">Plot Sequence diagram</button>
@@ -114,9 +130,10 @@
             let smallDelta = parseInt(document.getElementById('smallDelta').value) * 10 || 0;
             let echoSpacing = parseFloat(document.getElementById('echoSpacing').value) * 10 || 0;
             let N = parseInt(document.getElementById('N').value) || 0;
+            let PF = parseFloat(document.getElementById('PF').value) || 0;
 
             // Calculate minimum TE required
-            let minimumTE = (smallDelta + echoSpacing*N/2)*2;
+            let minimumTE = (smallDelta + Math.ceil(echoSpacing*(N/2 - N*PF)))*2;
 
             // Set the initial TE value in the input box if it's less than the minimum TE
             let currentTE = parseInt(document.getElementById('te').value)*10 || minimumTE;
@@ -130,25 +147,26 @@
 
         function drawDiagram() {
           
-            calculateMinimumTE() //check if the entered TE is less than minimum
-            // Get the input values
+            // check if the entered TE is less than minimum
+            calculateMinimumTE()
+            
+            // get the input values- the units are ms*10
             let smallDelta = parseInt(document.getElementById('smallDelta').value) * 10;
             let te = parseInt(document.getElementById('te').value) * 10;
             let echoSpacing = parseFloat(document.getElementById('echoSpacing').value) * 10;
             let N = parseInt(document.getElementById('N').value);
+            let PF = parseFloat(document.getElementById('PF').value);
             document.getElementById('bigDelta').value = (te/2 + 12)/10;
 
-            // Get the canvas element and context
+            // get the canvas element and context
             let canvas = document.getElementById('sequenceCanvas');
             let ctx = canvas.getContext('2d');
 
-            // Clear previous drawings
+            // clear previous drawings
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Set the line position (horizontal black line)
+            // draw the horizontal line
             let lineY = 150;
-
-            // Draw the horizontal black line
             ctx.beginPath();
             ctx.moveTo(1, lineY);
             ctx.lineTo(canvas.width - 1, lineY);
@@ -156,18 +174,16 @@
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            // Parameters for the first Gaussian curve
-            let amplitude1 = 50; // Height of the first Gaussian peak
-            let mean1 = 12; // The x-coordinate of the peak
-            let stdDev1 = 3.5; // Standard deviation for the first Gaussian curve (controls width)
-
-            // Draw the first Gaussian curve (black)
+            // plot excitation pulse
+            let amplitude1 = 50;  // peak of the pulse (meaningless)
+            let excX = 12;       // position of the center of the pulse
+            let excStd = 3.5;    // standard deviation of the Gaussian shape (controls width)
+            
             ctx.beginPath();
             ctx.strokeStyle = "black";
             ctx.lineWidth = 2;
-
             for (let x = 0; x < 24; x++) {
-                let y = gaussian(x, amplitude1, mean1, stdDev1);
+                let y = gaussian(x, amplitude1, excX, excStd);
                 if (x === 12) {
                     ctx.moveTo(x, lineY - y);
                 } else {
@@ -176,20 +192,18 @@
             }
             ctx.stroke();
             
-            // Parameters for the second Gaussian curve (double amplitude)
-            let amplitude2 = amplitude1 * 2; // Double the amplitude of the first Gaussian
-            let mean2 = mean1 + te/2 - 12; // Place the second Gaussian in the middle of TE
-            let stdDev2 = 3.5; // Same standard deviation for the second Gaussian curve
-
-            // Draw the second Gaussian curve (black)
-            let secondGaussianEndX = mean2 + 12; // Approximate end of the second Gaussian
+            // plot refocusing pulse
+            let amplitude2 = amplitude1 * 2; // double the amplitude of the excitation pulse
+            let refocX = excX + te/2 - 12; // place the refocusing pulse in the middle of TE
+            let refocStd = 3.5;    // same standard deviation for the Gaussian curve
+            let refocEnd = refocX + 12; // end of the refocusing pulse
+            
             ctx.beginPath();
             ctx.strokeStyle = "black";
             ctx.lineWidth = 2;
-
-            for (let x = mean2-12 ; x < secondGaussianEndX; x++) {
-                let y = gaussian(x, amplitude2, mean2, stdDev2);
-                if (x === mean2/2) {
+            for (let x = refocX-12 ; x < refocEnd; x++) {
+                let y = gaussian(x, amplitude2, refocX, refocStd);
+                if (x === refocX/2+1) {
                     ctx.moveTo(x, lineY - y);
                 } else {
                     ctx.lineTo(x, lineY - y);
@@ -197,62 +211,57 @@
             }
             ctx.stroke();
 
-            // Start the first trapezoid right after the first Gaussian
-            let startX1 = mean1 * 2;
-            let trapezoidHeight = 80; // Doubled height of the trapezoid
+            // plot first diffusion gradient pulse
+            let diffGradX1 = excX * 2;
+            let diffGradAmp = 80; // amplitude of diffusion gradient pulse
 
-            // Draw the first trapezoid (Small Delta) without filling and red border
             ctx.beginPath();
-            ctx.moveTo(startX1, lineY); // Bottom-left corner
-            ctx.lineTo(startX1 + smallDelta, lineY); // Bottom-right corner
-            ctx.lineTo(startX1 + (smallDelta * 0.8), lineY - trapezoidHeight); // Top-right corner
-            ctx.lineTo(startX1 + (smallDelta * 0.2), lineY - trapezoidHeight); // Top-left corner
+            ctx.moveTo(diffGradX1, lineY);
+            ctx.lineTo(diffGradX1 + smallDelta, lineY);
+            ctx.lineTo(diffGradX1 + (smallDelta * 0.8), lineY - diffGradAmp);
+            ctx.lineTo(diffGradX1 + (smallDelta * 0.2), lineY - diffGradAmp);
             ctx.closePath();
-            ctx.strokeStyle = "red"; // Red outline
+            ctx.strokeStyle = "red";
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            // Start the second trapezoid right after the second Gaussian curve
-            let startX2 = secondGaussianEndX;
+            // plot second diffusion gradient pulse
+            let diffGradX2 = refocEnd;
 
-            // Draw the second trapezoid (Small Delta) without filling and red border
             ctx.beginPath();
-            ctx.moveTo(startX2, lineY); // Bottom-left corner
-            ctx.lineTo(startX2 + smallDelta, lineY); // Bottom-right corner
-            ctx.lineTo(startX2 + (smallDelta * 0.8), lineY - trapezoidHeight); // Top-right corner
-            ctx.lineTo(startX2 + (smallDelta * 0.2), lineY - trapezoidHeight); // Top-left corner
+            ctx.moveTo(diffGradX2, lineY);
+            ctx.lineTo(diffGradX2 + smallDelta, lineY); 
+            ctx.lineTo(diffGradX2 + (smallDelta * 0.8), lineY - diffGradAmp); 
+            ctx.lineTo(diffGradX2 + (smallDelta * 0.2), lineY - diffGradAmp); 
             ctx.closePath();
-            ctx.strokeStyle = "red"; // Red outline
+            ctx.strokeStyle = "red";
             ctx.lineWidth = 2;
             ctx.stroke();
 
-            // EPI Readout starts after the second trapezoid
-            let epiStartX = startX2 + smallDelta + te/2 - (smallDelta + echoSpacing*N/2) + 5; // Starting point for the EPI readout trapezoids
-            let epiTrapezoidWidth = echoSpacing; // Width of each small trapezoid
-            let epiTrapezoidHeight = trapezoidHeight / 4; // Half the height of the big trapezoid
-
-            for (let i = 0; i < N; i++) {
+            // plot EPI Readout
+            let epiStartX = diffGradX2 + smallDelta + te/2 - (smallDelta + echoSpacing*(N/2 - N*PF)) + 5; // starting point for the EPI readout
+            let epiAmp = diffGradAmp / 4; 
+            
+            for (let i = 0; i < N*(1-PF); i++) {
                 ctx.beginPath();
                 if (i % 2 === 0) {
-                    // Regular trapezoid
-                    ctx.moveTo(epiStartX, lineY); // Bottom-left corner
-                    ctx.lineTo(epiStartX + epiTrapezoidWidth, lineY); // Bottom-right corner
-                    ctx.lineTo(epiStartX + (epiTrapezoidWidth * 0.8), lineY - epiTrapezoidHeight); // Top-right corner
-                    ctx.lineTo(epiStartX + (epiTrapezoidWidth * 0.2), lineY - epiTrapezoidHeight); // Top-left corner
+                    ctx.moveTo(epiStartX, lineY); 
+                    ctx.lineTo(epiStartX + echoSpacing, lineY);
+                    ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY - epiAmp);
+                    ctx.lineTo(epiStartX + (echoSpacing * 0.2), lineY - epiAmp);
                 } else {
-                    // Flipped trapezoid: long side on the horizontal line
-                    ctx.moveTo(epiStartX, lineY); // Bottom-left corner
-                    ctx.lineTo(epiStartX + epiTrapezoidWidth, lineY); // Bottom-right corner
-                    ctx.lineTo(epiStartX + (epiTrapezoidWidth * 0.8), lineY + epiTrapezoidHeight); // Top-right corner
-                    ctx.lineTo(epiStartX + (epiTrapezoidWidth * 0.2), lineY + epiTrapezoidHeight); // Top-left corner
+                    // flipped readout
+                    ctx.moveTo(epiStartX, lineY);
+                    ctx.lineTo(epiStartX + echoSpacing, lineY);
+                    ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY + epiAmp);
+                    ctx.lineTo(epiStartX + (echoSpacing * 0.2), lineY + epiAmp); 
                 }
                 ctx.closePath();
-                ctx.strokeStyle = "blue"; // Blue outline for EPI readout
+                ctx.strokeStyle = "blue";
                 ctx.lineWidth = 2;
                 ctx.stroke();
 
-                // Move the start position for the next trapezoid
-                epiStartX += epiTrapezoidWidth;
+                epiStartX += echoSpacing;
             }
         }
     </script>
