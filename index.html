@@ -4,84 +4,123 @@
     <meta charset="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trapezoid Plotter with Gaussian Curves and EPI Readout</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+    }
 
-        .container {
-            text-align: center;
-        }
+    .container {
+        text-align: left; /* Align all content to the left */
+        background-color: #fff; /* Add a white background for better contrast */
+        padding: 20px;
+        border-radius: 10px; /* Round the corners for a modern look */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    }
 
-        input {
-            margin: 10px;
-            padding: 5px;
-            width: 100px;
-        }
+    h1 {
+        text-align: center; /* Keep the title centered */
+        font-size: 1.5em;
+        margin-bottom: 20px; /* Add space below the title */
+    }
 
-        button {
-            margin: 20px;
-            padding: 10px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-        }
+    label, input, select, button {
+        display: in-line block; /* Stack elements vertically */
+        width: 10%; /* Make elements full-width */
+        margin-bottom: 15px; /* Add space between form elements */
+    }
 
-        #canvasContainer {
-            margin-top: 20px;
-        }
+    input, select {
+        padding: 8px; /* Add padding inside inputs and selects */
+        font-size: 1em;
+        border: 1px solid #ccc;
+        border-radius: 5px; /* Slightly rounded corners for inputs */
+    }
 
-        canvas {
-            background-color: white;
-            border: 1px solid black;
-        }
-    </style>
+    button {
+        font-size: 1em;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 40%;
+    }
+
+    button:hover {
+        background-color: #45a049; /* Slightly darker green on hover */
+    }
+
+    #canvasContainer {
+        margin-top: 20px;
+        text-align: center; /* Center the canvas inside its container */
+    }
+
+    canvas {
+        background-color: white;
+        border: 1px solid black;
+    }
+</style>
 </head>
 <body onload="initializeValues()">
 
     <div class="container">
         <h1>Diffusion-weighted sequence diagram</h1>
-        <label for="smallDelta">Small Delta: </label>
-        <input type="number" id="smallDelta" placeholder="Enter Small Delta" oninput="calculateMinimumTE()">
+        
+        <label for="N">Matrix size: </label>
+        <input type="number" id="N" placeholder="Enter matrix size" oninput="calculateMinimumTE()">
         <br>
+        
+        <label for="echoSpacing">Echo spacing: </label>
+        <input type="number" step="0.1" id="echoSpacing" placeholder="Enter echo spacing" oninput="calculateMinimumTE()">
+        <br>
+        
         <label for="te">TE: </label>
         <input type="number" id="te" placeholder="Enter TE">
         <br>
-        <label for="epiTrainLength">EPI Train Length: </label>
-        <input type="number" id="epiTrainLength" placeholder="Enter EPI Train Length" oninput="calculateMinimumTE()">
+        
+        <label for="smallDelta">Small Delta (&#948;): </label>
+        <input type="number" id="smallDelta" placeholder="Enter Small Delta" oninput="calculateMinimumTE()">
         <br>
-        <button onclick="drawTrapezoids()">Plot Trapezoids</button>
+        
+        <label for="bigDelta">Big Delta (&#916;): </label>
+        <input type="number" id="bigDelta" placeholder="Enter Big Delta" oninput="calculateMinimumTE()">
+        <br>
+        
+        <button onclick="drawDiagram()">Plot Sequence diagram</button>
 
         <div id="canvasContainer">
-            <canvas id="trapezoidCanvas" width="1000" height="400"></canvas>
+            <canvas id="sequenceCanvas" width="1000" height="300"></canvas>
         </div>
     </div>
 
     <script>
         function initializeValues() {
             // Initialize input values when the page loads
-            document.getElementById('smallDelta').value = 50;
-            document.getElementById('epiTrainLength').value = 200;
+            document.getElementById('N').value = 32;
+            document.getElementById('echoSpacing').value = 0.5;
+            document.getElementById('smallDelta').value = 5;
+            document.getElementById('bigDelta').value = 14.2;
             calculateMinimumTE(); // Calculate and set the initial TE
         }
 
         function calculateMinimumTE() {
-            // Get the values for smallDelta and epiTrainLength
-            let smallDelta = parseInt(document.getElementById('smallDelta').value) || 0;
-            let epiTrainLength = parseInt(document.getElementById('epiTrainLength').value) || 0;
+            // Get the values for smallDelta and echoSpacing
+            let smallDelta = parseInt(document.getElementById('smallDelta').value) * 10 || 0;
+            let echoSpacing = parseFloat(document.getElementById('echoSpacing').value) * 10 || 0;
+            let N = parseInt(document.getElementById('N').value) || 0;
 
             // Calculate minimum TE required
-            let minimumTE = smallDelta + epiTrainLength;
+            let minimumTE = (smallDelta + echoSpacing*N/2)*2;
 
             // Set the initial TE value in the input box if it's less than the minimum TE
-            let currentTE = parseInt(document.getElementById('te').value) || minimumTE;
-            document.getElementById('te').value = currentTE >= minimumTE ? currentTE : minimumTE;
+            let currentTE = parseInt(document.getElementById('te').value)*10 || minimumTE;
+            document.getElementById('te').value = currentTE >= minimumTE ? currentTE/10 : minimumTE/10;
         }
 
         function gaussian(x, amplitude, mean, stdDev) {
@@ -89,43 +128,68 @@
             return amplitude * Math.exp(-Math.pow(x - mean, 2) / (2 * Math.pow(stdDev, 2)));
         }
 
-        function drawTrapezoids() {
+        function drawDiagram() {
+          
+            calculateMinimumTE() //check if the entered TE is less than minimum
             // Get the input values
-            let smallDelta = parseInt(document.getElementById('smallDelta').value);
-            let te = parseInt(document.getElementById('te').value);
-            let epiTrainLength = parseInt(document.getElementById('epiTrainLength').value);
+            let smallDelta = parseInt(document.getElementById('smallDelta').value) * 10;
+            let te = parseInt(document.getElementById('te').value) * 10;
+            let echoSpacing = parseFloat(document.getElementById('echoSpacing').value) * 10;
+            let N = parseInt(document.getElementById('N').value);
+            document.getElementById('bigDelta').value = (te/2 + 12)/10;
 
             // Get the canvas element and context
-            let canvas = document.getElementById('trapezoidCanvas');
+            let canvas = document.getElementById('sequenceCanvas');
             let ctx = canvas.getContext('2d');
 
             // Clear previous drawings
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             // Set the line position (horizontal black line)
-            let lineY = 200;
+            let lineY = 150;
 
             // Draw the horizontal black line
             ctx.beginPath();
-            ctx.moveTo(50, lineY);
-            ctx.lineTo(canvas.width - 50, lineY);
+            ctx.moveTo(1, lineY);
+            ctx.lineTo(canvas.width - 1, lineY);
             ctx.strokeStyle = "black";
             ctx.lineWidth = 2;
             ctx.stroke();
 
             // Parameters for the first Gaussian curve
             let amplitude1 = 50; // Height of the first Gaussian peak
-            let mean1 = 100; // The x-coordinate of the peak
-            let stdDev1 = 2; // Standard deviation for the first Gaussian curve (controls width)
+            let mean1 = 12; // The x-coordinate of the peak
+            let stdDev1 = 3.5; // Standard deviation for the first Gaussian curve (controls width)
 
             // Draw the first Gaussian curve (black)
             ctx.beginPath();
             ctx.strokeStyle = "black";
             ctx.lineWidth = 2;
 
-            for (let x = 50; x < 150; x++) {
+            for (let x = 0; x < 24; x++) {
                 let y = gaussian(x, amplitude1, mean1, stdDev1);
-                if (x === 50) {
+                if (x === 12) {
+                    ctx.moveTo(x, lineY - y);
+                } else {
+                    ctx.lineTo(x, lineY - y);
+                }
+            }
+            ctx.stroke();
+            
+            // Parameters for the second Gaussian curve (double amplitude)
+            let amplitude2 = amplitude1 * 2; // Double the amplitude of the first Gaussian
+            let mean2 = mean1 + te/2 - 12; // Place the second Gaussian in the middle of TE
+            let stdDev2 = 3.5; // Same standard deviation for the second Gaussian curve
+
+            // Draw the second Gaussian curve (black)
+            let secondGaussianEndX = mean2 + 12; // Approximate end of the second Gaussian
+            ctx.beginPath();
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 2;
+
+            for (let x = mean2-12 ; x < secondGaussianEndX; x++) {
+                let y = gaussian(x, amplitude2, mean2, stdDev2);
+                if (x === mean2/2) {
                     ctx.moveTo(x, lineY - y);
                 } else {
                     ctx.lineTo(x, lineY - y);
@@ -134,39 +198,18 @@
             ctx.stroke();
 
             // Start the first trapezoid right after the first Gaussian
-            let startX1 = 150;
+            let startX1 = mean1 * 2;
             let trapezoidHeight = 80; // Doubled height of the trapezoid
 
             // Draw the first trapezoid (Small Delta) without filling and red border
             ctx.beginPath();
             ctx.moveTo(startX1, lineY); // Bottom-left corner
             ctx.lineTo(startX1 + smallDelta, lineY); // Bottom-right corner
-            ctx.lineTo(startX1 + (smallDelta * 0.7), lineY - trapezoidHeight); // Top-right corner
-            ctx.lineTo(startX1 + (smallDelta * 0.3), lineY - trapezoidHeight); // Top-left corner
+            ctx.lineTo(startX1 + (smallDelta * 0.8), lineY - trapezoidHeight); // Top-right corner
+            ctx.lineTo(startX1 + (smallDelta * 0.2), lineY - trapezoidHeight); // Top-left corner
             ctx.closePath();
             ctx.strokeStyle = "red"; // Red outline
             ctx.lineWidth = 2;
-            ctx.stroke();
-
-            // Parameters for the second Gaussian curve (double amplitude)
-            let amplitude2 = amplitude1 * 2; // Double the amplitude of the first Gaussian
-            let mean2 = mean1 + te / 2; // Place the second Gaussian in the middle of TE
-            let stdDev2 = 15; // Same standard deviation for the second Gaussian curve
-
-            // Draw the second Gaussian curve (black)
-            let secondGaussianEndX = mean2 + stdDev2 * 3; // Approximate end of the second Gaussian
-            ctx.beginPath();
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = 2;
-
-            for (let x = mean2 - stdDev2 * 3; x < secondGaussianEndX; x++) {
-                let y = gaussian(x, amplitude2, mean2, stdDev2);
-                if (x === mean2 - stdDev2 * 3) {
-                    ctx.moveTo(x, lineY - y);
-                } else {
-                    ctx.lineTo(x, lineY - y);
-                }
-            }
             ctx.stroke();
 
             // Start the second trapezoid right after the second Gaussian curve
@@ -176,32 +219,32 @@
             ctx.beginPath();
             ctx.moveTo(startX2, lineY); // Bottom-left corner
             ctx.lineTo(startX2 + smallDelta, lineY); // Bottom-right corner
-            ctx.lineTo(startX2 + (smallDelta * 0.7), lineY - trapezoidHeight); // Top-right corner
-            ctx.lineTo(startX2 + (smallDelta * 0.3), lineY - trapezoidHeight); // Top-left corner
+            ctx.lineTo(startX2 + (smallDelta * 0.8), lineY - trapezoidHeight); // Top-right corner
+            ctx.lineTo(startX2 + (smallDelta * 0.2), lineY - trapezoidHeight); // Top-left corner
             ctx.closePath();
             ctx.strokeStyle = "red"; // Red outline
             ctx.lineWidth = 2;
             ctx.stroke();
 
             // EPI Readout starts after the second trapezoid
-            let epiStartX = startX2 + smallDelta + 10; // Starting point for the EPI readout trapezoids
-            let epiTrapezoidWidth = epiTrainLength / 4; // Width of each small trapezoid
-            let epiTrapezoidHeight = trapezoidHeight / 2; // Half the height of the big trapezoid
+            let epiStartX = startX2 + smallDelta + te/2 - (smallDelta + echoSpacing*N/2) + 5; // Starting point for the EPI readout trapezoids
+            let epiTrapezoidWidth = echoSpacing; // Width of each small trapezoid
+            let epiTrapezoidHeight = trapezoidHeight / 4; // Half the height of the big trapezoid
 
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < N; i++) {
                 ctx.beginPath();
                 if (i % 2 === 0) {
                     // Regular trapezoid
                     ctx.moveTo(epiStartX, lineY); // Bottom-left corner
                     ctx.lineTo(epiStartX + epiTrapezoidWidth, lineY); // Bottom-right corner
-                    ctx.lineTo(epiStartX + (epiTrapezoidWidth * 0.7), lineY - epiTrapezoidHeight); // Top-right corner
-                    ctx.lineTo(epiStartX + (epiTrapezoidWidth * 0.3), lineY - epiTrapezoidHeight); // Top-left corner
+                    ctx.lineTo(epiStartX + (epiTrapezoidWidth * 0.8), lineY - epiTrapezoidHeight); // Top-right corner
+                    ctx.lineTo(epiStartX + (epiTrapezoidWidth * 0.2), lineY - epiTrapezoidHeight); // Top-left corner
                 } else {
                     // Flipped trapezoid: long side on the horizontal line
                     ctx.moveTo(epiStartX, lineY); // Bottom-left corner
                     ctx.lineTo(epiStartX + epiTrapezoidWidth, lineY); // Bottom-right corner
-                    ctx.lineTo(epiStartX + (epiTrapezoidWidth * 0.7), lineY + epiTrapezoidHeight); // Top-right corner
-                    ctx.lineTo(epiStartX + (epiTrapezoidWidth * 0.3), lineY + epiTrapezoidHeight); // Top-left corner
+                    ctx.lineTo(epiStartX + (epiTrapezoidWidth * 0.8), lineY + epiTrapezoidHeight); // Top-right corner
+                    ctx.lineTo(epiStartX + (epiTrapezoidWidth * 0.2), lineY + epiTrapezoidHeight); // Top-left corner
                 }
                 ctx.closePath();
                 ctx.strokeStyle = "blue"; // Blue outline for EPI readout
