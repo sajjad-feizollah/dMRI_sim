@@ -4,6 +4,45 @@
     <meta charset="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diffusion-weighted sequence diagram plotter</title>
     <style>
+
+        @media (max-width: 768px) {
+        body {
+            flex-direction: column; /* Stack elements vertically */
+            height: auto; /* Remove fixed height */
+        }
+
+        .container {
+            width: 90%; /* Adjust container width to fit smaller screens */
+            padding: 15px; /* Reduce padding */
+        }
+
+        h1 {
+            font-size: 1.2em; /* Reduce font size */
+        }
+
+        label, input, select, button {
+            display: block; /* Stack elements vertically */
+            width: 100%; /* Make elements full-width */
+            margin-bottom: 10px; /* Add spacing between elements */
+        }
+
+        input, select {
+            font-size: 0.9em; /* Adjust font size for inputs/selects */
+            padding: 6px; /* Reduce padding */
+        }
+
+        button {
+            font-size: 0.9em; /* Reduce button font size */
+            padding: 8px; /* Reduce padding for buttons */
+            width: 100%; /* Full-width button */
+        }
+
+        #canvasContainer canvas {
+            width: 80%; /* Make canvas responsive */
+            height: auto; /* Maintain aspect ratio */
+        }
+    }
+        
     body {
         font-family: Arial, sans-serif;
         display: flex;
