@@ -280,9 +280,51 @@
 
             // plot EPI Readout
             let epiStartX = diffGradX2 + smallDelta + te/2 - (smallDelta + echoSpacing*(N/2 - N*PF)) + 5; // starting point for the EPI readout
-            let epiAmp = diffGradAmp / 4; 
+            let epiAmp = diffGradAmp / 4;
+            let i =0;
             
-            for (let i = 0; i < N*(1-PF); i++) {
+            for (i = 0; i < Math.ceil(N/2 - N*PF); i++) {
+                ctx.beginPath();
+                if (i % 2 === 0) {
+                    ctx.moveTo(epiStartX, lineY); 
+                    ctx.lineTo(epiStartX + echoSpacing, lineY);
+                    ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY - epiAmp);
+                    ctx.lineTo(epiStartX + (echoSpacing * 0.2), lineY - epiAmp);
+                } else {
+                    // flipped readout
+                    ctx.moveTo(epiStartX, lineY);
+                    ctx.lineTo(epiStartX + echoSpacing, lineY);
+                    ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY + epiAmp);
+                    ctx.lineTo(epiStartX + (echoSpacing * 0.2), lineY + epiAmp); 
+                }
+                ctx.closePath();
+                ctx.strokeStyle = "blue";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                epiStartX += echoSpacing;
+            }
+            
+            ctx.beginPath();
+            if (i % 2 === 0) {
+                ctx.moveTo(epiStartX, lineY); 
+                ctx.lineTo(epiStartX + echoSpacing, lineY);
+                ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY - epiAmp);
+                ctx.lineTo(epiStartX + (echoSpacing * 0.2), lineY - epiAmp);
+            } else {
+                // flipped readout
+                ctx.moveTo(epiStartX, lineY);
+                ctx.lineTo(epiStartX + echoSpacing, lineY);
+                ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY + epiAmp);
+                ctx.lineTo(epiStartX + (echoSpacing * 0.2), lineY + epiAmp); 
+            }
+            ctx.closePath();
+            ctx.strokeStyle = "red";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            epiStartX += echoSpacing;
+            
+            for (i = Math.ceil(N/2 - N*PF) + 1; i < N*(1-PF); i++) {
                 ctx.beginPath();
                 if (i % 2 === 0) {
                     ctx.moveTo(epiStartX, lineY); 
