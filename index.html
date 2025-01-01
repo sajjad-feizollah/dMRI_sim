@@ -196,7 +196,7 @@
         <button onclick="drawDiagram()">Plot Sequence Diagram</button>
 
         <div id="canvasContainer">
-            <canvas id="sequenceCanvas" width="1000" height="300"></canvas>
+            <canvas id="sequenceCanvas" width="1500" height="500"></canvas>
         </div>
         
         <div class="image-box">
@@ -277,8 +277,8 @@
             ctx.strokeStyle = '#000';
             ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.moveTo(100, 150);
-            ctx.lineTo(900, 150);
+            ctx.moveTo(100, 250);
+            ctx.lineTo(900, 250);
             ctx.stroke();
         }
         
@@ -309,7 +309,7 @@
             drawGrids();
             
             // draw the horizontal line
-            let lineY = 150;
+            let lineY = 250;
             ctx.beginPath();
             ctx.moveTo(1, lineY);
             ctx.lineTo(canvas.width - 1, lineY);
