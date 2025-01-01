@@ -40,8 +40,8 @@
         }
 
         label {
-          margin-left: 100px;
-          display: inline;
+            display: inline;
+            vertical-align: middle;
         }
 
         input, select {
@@ -51,10 +51,17 @@
             border-radius: 5px;
             width: 20%;
             display: inline;
+            vertical-align: middle;
         }
 
         select {
-            width: 30%;
+            width: 20%;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 5px;
+            vertical-align: middle;
         }
 
         button {
@@ -118,10 +125,9 @@
             <unit for="echoSpacing">ms</unit>
         </div>
 
-        <div>
-            <label>
-                <input type="checkbox" id="minTE" value="minTE" checked> Minimize TE
-            </label>
+        <div style="display: flex; align-items: center;">
+            <input type="checkbox" id="minTE" value="minTE" checked>
+            <label for="minTE" style="margin: 0;">Minimize TE</label>
         </div>
 
         <div>
