@@ -13,7 +13,7 @@
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
-            margin: 0;
+            margin: 10px;
             background-color: #f0f0f0;
             overflow-y: auto;
         }
@@ -89,14 +89,14 @@
         #canvasContainer {
             margin-top: 20px;
             text-align: center;
-            grid-column: span 2;
+            grid-column: span 2; /* Spans all three columns */
+            overflow-x: auto; /* Enable horizontal scrolling */
         }
 
         canvas {
             background-color: white;
             border: 1px solid black;
-            max-width: 100%;
-            height: auto;
+            max-width: none; /* Allow canvas to exceed container width */
         }
         
         .image-box {
@@ -195,7 +195,7 @@
         <button onclick="drawDiagram()">Plot Sequence Diagram</button>
 
         <div id="canvasContainer">
-            <canvas id="sequenceCanvas" width="1200" height="500"></canvas>
+            <canvas id="sequenceCanvas" width="1500" height="500"></canvas>
         </div>
         
         <div class="image-box">
