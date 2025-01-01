@@ -208,6 +208,44 @@
             return amplitude * Math.exp(-Math.pow(x - mean, 2) / (2 * Math.pow(stdDev, 2)));
         }
 
+        function drawGrids() {
+            const canvas = document.getElementById('sequenceCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Set grid properties
+            ctx.strokeStyle = '#ddd';
+            ctx.lineWidth = 1;
+
+            // Draw vertical grid lines
+            const stepX = 10;
+            for (let x = stepX; x < canvas.width; x += stepX) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+
+            // Draw horizontal grid lines
+            const stepY = 10;
+            for (let y = stepY; y < canvas.height; y += stepY) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            // Example: Draw a simple diagram element (line)
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(100, 150);
+            ctx.lineTo(900, 150);
+            ctx.stroke();
+        }
+        
         function drawDiagram() {
           
             // check if the entered TE is less than minimum
@@ -231,6 +269,9 @@
             // clear previous drawings
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            // draw Grids
+            drawGrdis();
+            
             // draw the horizontal line
             let lineY = 150;
             ctx.beginPath();
