@@ -9,146 +9,153 @@
     <meta charset="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diffusion-weighted sequence diagram plotter</title>
 <style>
-     body {
-        font-family: Arial, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        background-color: #f0f0f0;
-    }
-    .container {
-        text-align: left;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
 
-    h1 {
-        text-align: center;
-        font-size: 1.5em;
-        margin-bottom: 20px;
-    }
-
-    label, input, select, button {
-        display: inline-block; /* Corrected syntax */
-        margin-bottom: 15px;
-    }
-
-    input, select {
-        padding: 8px;
-        font-size: 1em;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        width: 6%; /* Responsive width */
-    }
-
-    select {
-        width: 10%; /* Same width as inputs */
-    }
-
-    button {
-        font-size: 1em;
-        padding: 10px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        width: 30%; /* Full-width button */
-        margin: 0 auto;
-    }
-
-    button:hover {
-        background-color: #45a049;
-    }
-
-    #canvasContainer {
-        margin-top: 20px;
-        text-align: center;
-    }
-
-    canvas {
-        background-color: white;
-        border: 1px solid black;
-        max-width: 100%; /* Prevent canvas overflow */
-        height: auto; /* Maintain aspect ratio */
-    }
-
-    @media (max-width: 768px) {
         .container {
-            width: 90%; /* Adjust container width */
-            padding: 15px;
-        }
-
-        h1 {
-            font-size: 1.2em;
-        }
-
-        label, input, select, button {
-            display: block; /* Stack elements vertically */
-            width: 100%; /* Full-width elements */
-            margin-bottom: 10px;
-        }
-
-        input, select {
-            font-size: 0.9em;
-            padding: 6px;
-        }
-
-        button {
-            font-size: 0.9em;
-            padding: 8px;
+            text-align: left;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 800px;
             width: 100%;
         }
 
-        #canvasContainer canvas {
-            width: 100%; /* Full-width canvas for mobile */
+        h1 {
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            grid-column: span 2;
+        }
+
+        label {
+          margin-left: 100px;
+          display: inline;
+        }
+
+        input, select {
+            padding: 8px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 20%;
+            display: inline;
+        }
+
+        select {
+            width: 30%;
+        }
+
+        button {
+            font-size: 1em;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            grid-column: span 2;
+            justify-self: center;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #canvasContainer {
+            margin-top: 20px;
+            text-align: center;
+            grid-column: span 2;
+        }
+
+        canvas {
+            background-color: white;
+            border: 1px solid black;
+            max-width: 100%;
             height: auto;
         }
-    }
-</style>
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body onload="initializeValues()">
-
     <div class="container">
-        <h1>Diffusion-weighted sequence diagram</h1>
+        <h1>Diffusion-weighted Sequence Diagram</h1>
         
-        <label for="N">Matrix size: </label>
-        <input type="number" id="N" placeholder="Enter matrix size" oninput="calculateMinimumTE()">
-        <br>
-        
-        <label for="echoSpacing">Echo spacing: </label>
-        <input type="number" step="0.1" id="echoSpacing" placeholder="Enter echo spacing" oninput="calculateMinimumTE()">
-        <label for="echoSpacing">ms</label>
-        <br>
-        
-        <label for="PF">Partial Fourier:</label>
-        <select id="PF" name="PF">
-          <option value="0.0">None</option>
-          <option value="0.128">7/8 (87%)</option>
-          <option value="0.25">6/8 (75%)</option>
-        </select>
-        <br>
-        
-        <label for="te">TE: </label>
-        <input type="number" id="te" placeholder="Enter TE">
-        <label for="echoSpacing">ms</label>
-        <br>
-        
-        <label for="smallDelta">Small Delta (&#948;): </label>
-        <input type="number" id="smallDelta" placeholder="Enter Small Delta" oninput="calculateMinimumTE()">
-        <label for="echoSpacing">ms</label>
-        <br>
-        
-        <label for="bigDelta">Big Delta (&#916;): </label>
-        <input type="number" id="bigDelta" placeholder="Enter Big Delta" oninput="calculateMinimumTE()">
-        <label for="echoSpacing">ms</label>
-        <br>
-        
-        <button onclick="drawDiagram()">Plot Sequence diagram</button>
+        <div>
+            <label for="N">Matrix size (N):</label>
+            <input type="number" id="N" placeholder="Enter matrix size" oninput="calculateMinimumTE()">
+        </div>
+
+        <div>
+            <label for="te">TE:</label>
+            <input type="number" id="te" placeholder="Enter TE">
+            <unit for="echoSpacing">ms</unit>
+        </div>
+
+        <div>
+            <label for="echoSpacing">Echo spacing:</label>
+            <input type="number" step="0.1" id="echoSpacing" placeholder="Enter echo spacing" oninput="calculateMinimumTE()">
+            <unit for="echoSpacing">ms</unit>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" id="minTE" value="minTE" checked> Minimize TE
+            </label>
+        </div>
+
+        <div>
+            <label for="PF">Partial Fourier:</label>
+            <select id="PF" name="PF">
+                <option value="0.0">None</option>
+                <option value="0.128">7/8 (87%)</option>
+                <option value="0.25">6/8 (75%)</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="smallDelta">Small Delta (&#948;):</label>
+            <input type="number" id="smallDelta" placeholder="Enter Small Delta" oninput="calculateMinimumTE()">
+            <unit for="echoSpacing">ms</unit>
+        </div>
+
+        <div>
+            <label for="R">GRAPPA factor:</label>
+            <select id="R" name="R">
+                <option value="1">None</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="bigDelta">Big Delta (&#916;):</label>
+            <input type="number" id="bigDelta" placeholder="Enter Big Delta" oninput="calculateMinimumTE()">
+            <unit for="echoSpacing">ms</unit>
+        </div>
+
+        <button onclick="drawDiagram()">Plot Sequence Diagram</button>
 
         <div id="canvasContainer">
             <canvas id="sequenceCanvas" width="1000" height="300"></canvas>
@@ -156,9 +163,10 @@
     </div>
 
     <script>
+      var RFDuration = 24;
         function initializeValues() {
             // Initialize input values when the page loads
-            document.getElementById('N').value = 32;
+            document.getElementById('N').value = 64;
             document.getElementById('echoSpacing').value = 0.5;
             document.getElementById('smallDelta').value = 5;
             document.getElementById('bigDelta').value = 14.2;
@@ -171,13 +179,21 @@
             let echoSpacing = parseFloat(document.getElementById('echoSpacing').value) * 10 || 0;
             let N = parseInt(document.getElementById('N').value) || 0;
             let PF = parseFloat(document.getElementById('PF').value) || 0;
+            let R = parseInt(document.getElementById('R').value) || 0;
+            let minTE = document.getElementById('minTE').checked;
+            
+            N = Math.ceil(N / R);
 
             // Calculate minimum TE required
-            let minimumTE = (smallDelta + Math.ceil(echoSpacing*(N/2 - N*PF)))*2;
+            let minimumTE = Math.max((RFDuration/2 + smallDelta + Math.ceil(echoSpacing*(N/2 - N*PF))),(RFDuration + smallDelta))*2;
 
             // Set the initial TE value in the input box if it's less than the minimum TE
             let currentTE = parseInt(document.getElementById('te').value)*10 || minimumTE;
-            document.getElementById('te').value = currentTE >= minimumTE ? currentTE/10 : minimumTE/10;
+            document.getElementById('te').value = (currentTE >= minimumTE) ? currentTE/10 : minimumTE/10;
+            if(minTE) 
+            {
+              document.getElementById('te').value = minimumTE/10;
+            }
         }
 
         function gaussian(x, amplitude, mean, stdDev) {
@@ -196,7 +212,10 @@
             let echoSpacing = parseFloat(document.getElementById('echoSpacing').value) * 10;
             let N = parseInt(document.getElementById('N').value);
             let PF = parseFloat(document.getElementById('PF').value);
-            document.getElementById('bigDelta').value = (te/2 + 12)/10;
+            let R = parseInt(document.getElementById('R').value);
+            document.getElementById('bigDelta').value = (te/2 + RFDuration/2)/10;
+            
+            N = Math.ceil(N / R);
 
             // get the canvas element and context
             let canvas = document.getElementById('sequenceCanvas');
@@ -216,15 +235,15 @@
 
             // plot excitation pulse
             let amplitude1 = 50;  // peak of the pulse (meaningless)
-            let excX = 12;       // position of the center of the pulse
+            let excX = RFDuration/2;       // position of the center of the pulse
             let excStd = 3.5;    // standard deviation of the Gaussian shape (controls width)
             
             ctx.beginPath();
             ctx.strokeStyle = "black";
             ctx.lineWidth = 2;
-            for (let x = 0; x < 24; x++) {
+            for (let x = 0; x < RFDuration; x++) {
                 let y = gaussian(x, amplitude1, excX, excStd);
-                if (x === 12) {
+                if (x === RFDuration/2) {
                     ctx.moveTo(x, lineY - y);
                 } else {
                     ctx.lineTo(x, lineY - y);
@@ -234,16 +253,16 @@
             
             // plot refocusing pulse
             let amplitude2 = amplitude1 * 2; // double the amplitude of the excitation pulse
-            let refocX = excX + te/2 - 12; // place the refocusing pulse in the middle of TE
+            let refocX = excX + te/2 - RFDuration/2; // place the refocusing pulse in the middle of TE
             let refocStd = 3.5;    // same standard deviation for the Gaussian curve
-            let refocEnd = refocX + 12; // end of the refocusing pulse
+            let refocEnd = refocX + RFDuration/2; // end of the refocusing pulse
             
             ctx.beginPath();
             ctx.strokeStyle = "black";
             ctx.lineWidth = 2;
-            for (let x = refocX-12 ; x < refocEnd; x++) {
+            for (let x = refocX-RFDuration/2+1 ; x < refocEnd; x++) {
                 let y = gaussian(x, amplitude2, refocX, refocStd);
-                if (x === refocX/2+1) {
+                if (x === refocX) {
                     ctx.moveTo(x, lineY - y);
                 } else {
                     ctx.lineTo(x, lineY - y);
@@ -279,7 +298,7 @@
             ctx.stroke();
 
             // plot EPI Readout
-            let epiStartX = diffGradX2 + smallDelta + te/2 - (smallDelta + echoSpacing*(N/2 - N*PF)) + 5; // starting point for the EPI readout
+            let epiStartX = diffGradX2 + smallDelta + te/2 - (smallDelta + echoSpacing*(N/2 - N*PF)); // starting point for the EPI readout
             let epiAmp = diffGradAmp / 4;
             let i =0;
             
