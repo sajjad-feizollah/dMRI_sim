@@ -189,7 +189,12 @@
 
             // Set the initial TE value in the input box if it's less than the minimum TE
             let currentTE = parseInt(document.getElementById('te').value)*10 || minimumTE;
-            document.getElementById('te').value = (currentTE >= minimumTE) || document.getElementById('te').value ? Math.ceil(currentTE/10) : Math.ceil(minimumTE/10);
+            document.getElementById('te').value = (currentTE >= minimumTE) || minTE ? Math.ceil(currentTE/10) : Math.ceil(minimumTE/10);
+
+            if(minTE) 
+            {
+              document.getElementById('te').value = Math.ceil(minimumTE/10);
+            }
         }
 
         function gaussian(x, amplitude, mean, stdDev) {
