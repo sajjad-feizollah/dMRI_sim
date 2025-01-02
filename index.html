@@ -101,19 +101,21 @@
         }
         
         .image-box {
-            width: 100%; /* Set desired box width */
-            height: 256px; /* Set desired box height */
+            width: 1152px; /* Set desired box width */
+            height: 384px; /* Set desired box height */
             border: 2px solid #ccc; /* Add a border */
             display: flex;
             align-items: center; /* Center image vertically */
             justify-content: center; /* Center image horizontally */
             background-color: #f9f9f9; /* Optional background color */
             grid-column: span 2;
+            overflow: hidden;
+            justify-self: center;
         }
         .image-box img {
-            max-width: 100%; /* Prevent the image from overflowing */
-            max-height: 100%; /* Prevent the image from overflowing */
-            justify-content: center;
+            width: 100%; /* Stretch the image to fill the width */
+            height: 100%; /* Stretch the image to fill the height */
+            object-fit: fill; /* Stretch the image to completely fit the box */
         }
 
         @media (max-width: 768px) {
