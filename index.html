@@ -187,8 +187,8 @@
         </div>
         
         <select class="select_scans" id="scans" name="scans" onchange="changePreScanParams()">
-          <option value="0">Pre defined scans</option>
-          <option value="1">N=128, GRAPPA=2, AP, PF=1</option>
+          <option value="0">Available scans</option>
+          <option value="1">N=128, Echo spacing=0.65, PF=6/8, GRAPPA=2, TE=68, b-value=0, PE= AP</option>
           <option value="2">N=128, GRAPPA=3, AP, PF=1</option>
           <option value="3">N=128, GRAPPA=4, AP, PF=1</option>
           <option value="4">N=128, GRAPPA=5, AP, PF=1</option>
@@ -363,8 +363,8 @@
             ctx.beginPath();
             ctx.moveTo(diffGradX1, lineY);
             ctx.lineTo(diffGradX1 + smallDelta, lineY);
-            ctx.lineTo(diffGradX1 + (smallDelta * 0.8), lineY - diffGradAmp);
-            ctx.lineTo(diffGradX1 + (smallDelta * 0.2), lineY - diffGradAmp);
+            ctx.lineTo(diffGradX1 + (smallDelta * 0.9), lineY - diffGradAmp);
+            ctx.lineTo(diffGradX1 + (smallDelta * 0.1), lineY - diffGradAmp);
             ctx.closePath();
             ctx.strokeStyle = "red";
             ctx.lineWidth = 2;
@@ -376,8 +376,8 @@
             ctx.beginPath();
             ctx.moveTo(diffGradX2, lineY);
             ctx.lineTo(diffGradX2 + smallDelta, lineY); 
-            ctx.lineTo(diffGradX2 + (smallDelta * 0.8), lineY - diffGradAmp); 
-            ctx.lineTo(diffGradX2 + (smallDelta * 0.2), lineY - diffGradAmp); 
+            ctx.lineTo(diffGradX2 + (smallDelta * 0.9), lineY - diffGradAmp); 
+            ctx.lineTo(diffGradX2 + (smallDelta * 0.1), lineY - diffGradAmp); 
             ctx.closePath();
             ctx.strokeStyle = "red";
             ctx.lineWidth = 2;
@@ -465,7 +465,8 @@
               document.getElementById('PF').value = "0.25";
               document.getElementById('R').value = "2";
               document.getElementById('smallDelta').value = "20";
-              document.getElementById('minTE').checked= true;
+              document.getElementById('minTE').checked= false;
+              document.getElementById('te').value= 68;
               break;
           
             default:
