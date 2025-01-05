@@ -371,10 +371,9 @@
             {
                 ctx.beginPath();
                 ctx.moveTo(diffGradX1, lineY);
-                ctx.lineTo(diffGradX1 + smallDelta, lineY);
-                ctx.lineTo(diffGradX1 + (smallDelta * 0.9), lineY - diffGradAmp);
                 ctx.lineTo(diffGradX1 + (smallDelta * 0.1), lineY - diffGradAmp);
-                ctx.closePath();
+                ctx.lineTo(diffGradX1 + (smallDelta * 0.9), lineY - diffGradAmp);
+                ctx.lineTo(diffGradX1 + smallDelta, lineY);
                 ctx.strokeStyle = "red";
                 ctx.lineWidth = 2;
                 ctx.stroke();
@@ -387,10 +386,9 @@
             {
                 ctx.beginPath();
                 ctx.moveTo(diffGradX2, lineY);
-                ctx.lineTo(diffGradX2 + smallDelta, lineY); 
-                ctx.lineTo(diffGradX2 + (smallDelta * 0.9), lineY - diffGradAmp); 
                 ctx.lineTo(diffGradX2 + (smallDelta * 0.1), lineY - diffGradAmp); 
-                ctx.closePath();
+                ctx.lineTo(diffGradX2 + (smallDelta * 0.9), lineY - diffGradAmp); 
+                ctx.lineTo(diffGradX2 + smallDelta, lineY);
                 ctx.strokeStyle = "red";
                 ctx.lineWidth = 2;
                 ctx.stroke();
@@ -411,11 +409,10 @@
                 } else {
                     // flipped readout
                     ctx.moveTo(epiStartX, lineY);
-                    ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY + epiAmp);
                     ctx.lineTo(epiStartX + (echoSpacing * 0.2), lineY + epiAmp);
+                    ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY + epiAmp);
                     ctx.lineTo(epiStartX + echoSpacing, lineY);
                 }
-                //ctx.closePath();
                 ctx.strokeStyle = "blue";
                 ctx.lineWidth = 2;
                 ctx.stroke();
@@ -426,15 +423,15 @@
             ctx.beginPath();
             if (i % 2 === 0) {
                 ctx.moveTo(epiStartX, lineY); 
-                ctx.lineTo(epiStartX + echoSpacing, lineY);
-                ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY - epiAmp);
                 ctx.lineTo(epiStartX + (echoSpacing * 0.2), lineY - epiAmp);
+                ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY - epiAmp);
+                ctx.lineTo(epiStartX + echoSpacing, lineY);
             } else {
                 // flipped readout
                 ctx.moveTo(epiStartX, lineY);
+                ctx.lineTo(epiStartX + (echoSpacing * 0.2), lineY + epiAmp);
+                ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY + epiAmp); 
                 ctx.lineTo(epiStartX + echoSpacing, lineY);
-                ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY + epiAmp);
-                ctx.lineTo(epiStartX + (echoSpacing * 0.2), lineY + epiAmp); 
             }
             ctx.closePath();
             ctx.strokeStyle = "red";
@@ -446,17 +443,16 @@
                 ctx.beginPath();
                 if (i % 2 === 0) {
                     ctx.moveTo(epiStartX, lineY); 
-                    ctx.lineTo(epiStartX + echoSpacing, lineY);
-                    ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY - epiAmp);
                     ctx.lineTo(epiStartX + (echoSpacing * 0.2), lineY - epiAmp);
+                    ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY - epiAmp);
+                    ctx.lineTo(epiStartX + echoSpacing, lineY);
                 } else {
                     // flipped readout
                     ctx.moveTo(epiStartX, lineY);
+                    ctx.lineTo(epiStartX + (echoSpacing * 0.2), lineY + epiAmp);
+                    ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY + epiAmp); 
                     ctx.lineTo(epiStartX + echoSpacing, lineY);
-                    ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY + epiAmp);
-                    ctx.lineTo(epiStartX + (echoSpacing * 0.2), lineY + epiAmp); 
                 }
-                ctx.closePath();
                 ctx.strokeStyle = "blue";
                 ctx.lineWidth = 2;
                 ctx.stroke();
