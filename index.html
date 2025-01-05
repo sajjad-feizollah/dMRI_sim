@@ -399,7 +399,7 @@
             let epiAmp = diffGradAmp / 4;
             let i =0;
             
-            for (i = 0; i < Math.ceil(N/2 - N*PF); i++) {
+            for (i = 0; i < Math.ceil(N/2 - N*PF)-1; i++) {
                 ctx.beginPath();
                 if (i % 2 === 0) {
                     ctx.moveTo(epiStartX, lineY); 
@@ -438,7 +438,7 @@
             ctx.stroke();
             epiStartX += echoSpacing;
             
-            for (i = Math.ceil(N/2 - N*PF) + 1; i < N*(1-PF); i++) {
+            for (i = Math.ceil(N/2 - N*PF); i < N*(1-PF); i++) {
                 ctx.beginPath();
                 if (i % 2 === 0) {
                     ctx.moveTo(epiStartX, lineY); 
