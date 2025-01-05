@@ -405,17 +405,17 @@
                 ctx.beginPath();
                 if (i % 2 === 0) {
                     ctx.moveTo(epiStartX, lineY); 
-                    ctx.lineTo(epiStartX + echoSpacing, lineY);
-                    ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY - epiAmp);
                     ctx.lineTo(epiStartX + (echoSpacing * 0.2), lineY - epiAmp);
+                    ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY - epiAmp);
+                    ctx.lineTo(epiStartX + echoSpacing, lineY);
                 } else {
                     // flipped readout
                     ctx.moveTo(epiStartX, lineY);
-                    ctx.lineTo(epiStartX + echoSpacing, lineY);
                     ctx.lineTo(epiStartX + (echoSpacing * 0.8), lineY + epiAmp);
-                    ctx.lineTo(epiStartX + (echoSpacing * 0.2), lineY + epiAmp); 
+                    ctx.lineTo(epiStartX + (echoSpacing * 0.2), lineY + epiAmp);
+                    ctx.lineTo(epiStartX + echoSpacing, lineY);
                 }
-                ctx.closePath();
+                //ctx.closePath();
                 ctx.strokeStyle = "blue";
                 ctx.lineWidth = 2;
                 ctx.stroke();
