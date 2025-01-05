@@ -212,8 +212,8 @@
             // Initialize input values when the page loads
             document.getElementById('N').value = 128;
             document.getElementById('echoSpacing').value = 0.5;
-            document.getElementById('smallDelta').value = 5;
-            document.getElementById('bigDelta').value = 14.2;
+            document.getElementById('smallDelta').value = 0;
+            document.getElementById('bigDelta').value = 0;
             calculateMinimumTE(); // Calculate and set the initial TE
         }
 
@@ -296,7 +296,14 @@
             let N = parseInt(document.getElementById('N').value);
             let PF = parseFloat(document.getElementById('PF').value);
             let R = parseInt(document.getElementById('R').value);
-            document.getElementById('bigDelta').value = (te/2 + RFDuration/2)/10;
+            if(smallDelta ==0)
+            {
+                document.getElementById('bigDelta').value = 0;
+            }
+            else
+            {
+                document.getElementById('bigDelta').value = (te/2 + RFDuration/2)/10;    
+            }
             
             N = Math.ceil(N / R);
 
@@ -360,28 +367,34 @@
             let diffGradX1 = excX * 2;
             let diffGradAmp = 80; // amplitude of diffusion gradient pulse
 
-            ctx.beginPath();
-            ctx.moveTo(diffGradX1, lineY);
-            ctx.lineTo(diffGradX1 + smallDelta, lineY);
-            ctx.lineTo(diffGradX1 + (smallDelta * 0.9), lineY - diffGradAmp);
-            ctx.lineTo(diffGradX1 + (smallDelta * 0.1), lineY - diffGradAmp);
-            ctx.closePath();
-            ctx.strokeStyle = "red";
-            ctx.lineWidth = 2;
-            ctx.stroke();
+            if(smallDelta !=0)
+            {
+                ctx.beginPath();
+                ctx.moveTo(diffGradX1, lineY);
+                ctx.lineTo(diffGradX1 + smallDelta, lineY);
+                ctx.lineTo(diffGradX1 + (smallDelta * 0.9), lineY - diffGradAmp);
+                ctx.lineTo(diffGradX1 + (smallDelta * 0.1), lineY - diffGradAmp);
+                ctx.closePath();
+                ctx.strokeStyle = "red";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
 
             // plot second diffusion gradient pulse
             let diffGradX2 = refocEnd;
 
-            ctx.beginPath();
-            ctx.moveTo(diffGradX2, lineY);
-            ctx.lineTo(diffGradX2 + smallDelta, lineY); 
-            ctx.lineTo(diffGradX2 + (smallDelta * 0.9), lineY - diffGradAmp); 
-            ctx.lineTo(diffGradX2 + (smallDelta * 0.1), lineY - diffGradAmp); 
-            ctx.closePath();
-            ctx.strokeStyle = "red";
-            ctx.lineWidth = 2;
-            ctx.stroke();
+            if(smallDelta !=0)
+            {
+                ctx.beginPath();
+                ctx.moveTo(diffGradX2, lineY);
+                ctx.lineTo(diffGradX2 + smallDelta, lineY); 
+                ctx.lineTo(diffGradX2 + (smallDelta * 0.9), lineY - diffGradAmp); 
+                ctx.lineTo(diffGradX2 + (smallDelta * 0.1), lineY - diffGradAmp); 
+                ctx.closePath();
+                ctx.strokeStyle = "red";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
 
             // plot EPI Readout
             let epiStartX = diffGradX2 + smallDelta + te/2 - (smallDelta + echoSpacing*(N/2 - N*PF)); // starting point for the EPI readout
