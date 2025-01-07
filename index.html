@@ -161,6 +161,7 @@
                 <option value="0.0">None</option>
                 <option value="0.128">7/8 (87%)</option>
                 <option value="0.25">6/8 (75%)</option>
+                <option value="0.375">5/8 (62%)</option>
             </select>
         </div>
 
@@ -189,10 +190,10 @@
         <select class="select_scans" id="scans" name="scans" onchange="changePreScanParams()">
           <option value="0">Available scans</option>
           <option value="1">N=128, Echo spacing=0.65, PF=6/8, GRAPPA=2, TE=68, b-value=0, PE= AP</option>
-          <option value="2">N=128, GRAPPA=3, AP, PF=1</option>
-          <option value="3">N=128, GRAPPA=4, AP, PF=1</option>
-          <option value="4">N=128, GRAPPA=5, AP, PF=1</option>
-          <option value="5">N=128, GRAPPA=2, PA, PF=1</option>
+          <option value="2">N=128, Echo spacing=0.65, PF=1, GRAPPA=2, TE=61, b-value=0, PE= AP</option>
+          <option value="3">N=128, Echo spacing=0.65, PF=7/8, GRAPPA=2, TE=61, b-value=0, PE= AP</option>
+          <option value="4">N=128, Echo spacing=0.65, PF=6/8, GRAPPA=2, TE=61, b-value=0, PE= AP</option>
+          <option value="5">N=128, Echo spacing=0.65, PF=5/8, GRAPPA=2, TE=61, b-value=0, PE= AP</option>
         </select>
         
         <button onclick="drawDiagram()">Plot Sequence Diagram</button>
@@ -476,6 +477,44 @@
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 68;
               break;
+            case 2:
+              document.getElementById('N').value = 128;
+              document.getElementById('echoSpacing').value = 0.65;
+              document.getElementById('PF').value = "0.0";
+              document.getElementById('R').value = "2";
+              document.getElementById('smallDelta').value = "0";
+              document.getElementById('minTE').checked= false;
+              document.getElementById('te').value= 61;
+              break;
+            case 3:
+              document.getElementById('N').value = 128;
+              document.getElementById('echoSpacing').value = 0.65;
+              document.getElementById('PF').value = "0.128";
+              document.getElementById('R').value = "2";
+              document.getElementById('smallDelta').value = "0";
+              document.getElementById('minTE').checked= false;
+              document.getElementById('te').value= 61;
+              break;
+            case 4:
+              document.getElementById('N').value = 128;
+              document.getElementById('echoSpacing').value = 0.65;
+              document.getElementById('PF').value = "0.25";
+              document.getElementById('R').value = "2";
+              document.getElementById('smallDelta').value = "0";
+              document.getElementById('minTE').checked= false;
+              document.getElementById('te').value= 61;
+              break;
+            case 5:
+              document.getElementById('N').value = 128;
+              document.getElementById('echoSpacing').value = 0.65;
+              document.getElementById('PF').value = "0.375";
+              document.getElementById('R').value = "2";
+              document.getElementById('smallDelta').value = "0";
+              document.getElementById('minTE').checked= false;
+              document.getElementById('te').value= 61;
+              break;
+                  
+                  
           
             default:
               break;
@@ -489,11 +528,24 @@
           
           switch (imageNumber){
             case 1:
-              
-              imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im09.png'; // Replace with your actual GitHub image URL
-              // Optionally, update the alt text
-              imgElement.alt = 'New Image';
-              
+              imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im09.png';
+              imgElement.alt = 'New Image';  
+              break;
+            case 2:
+              imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im25.png';
+              imgElement.alt = 'New Image';  
+              break;
+            case 3:
+              imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im26.png';
+              imgElement.alt = 'New Image';  
+              break;
+            case 4:
+              imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im27.png';
+              imgElement.alt = 'New Image';  
+              break;
+            case 5:
+              imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im28.png';
+              imgElement.alt = 'New Image';  
               break;
           
             default:
