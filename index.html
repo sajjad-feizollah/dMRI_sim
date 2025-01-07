@@ -311,11 +311,18 @@
             ctx.lineTo(900, 105);
             ctx.stroke();
         }
+
+        function pushDraw(){
+
+            document.getElementById('scans').value = "0";
+            drawDiagram();
+            
+        }
         
         function drawDiagram() {
           
             // check if the entered TE is less than minimum
-            calculateMinimumTE()
+            calculateMinimumTE();
             
             // get the input values- the units are ms*10
             let smallDelta = parseInt(document.getElementById('smallDelta').value) * 10;
