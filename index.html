@@ -204,8 +204,7 @@
         </div>
         
         <select class="select_scans" id="scans" name="scans" onchange="changePreScanParams()">
-          <option value="0">-------------------------------------------------Available scans---------------------------------------------</option>
-          <option value="1">N=128, Echo spacing=0.65, PF=6/8, GRAPPA=2, MB=1, TE=68, b-value=0, PE= AP</option>
+          <option value="0">                                            Available scans                                                 </option>
           <option value="0">------------------------------------------Partial Fourier scans---------------------------------------------</option>
           <option value="2">N=128, Echo spacing=0.65, PF=1,   GRAPPA=2, MB=1, TE=61, b-value=0, PE= AP</option>
           <option value="3">N=128, Echo spacing=0.65, PF=7/8, GRAPPA=2, MB=1, TE=61, b-value=0, PE= AP</option>
@@ -496,15 +495,6 @@
           let imageNumber = parseInt(document.getElementById('scans').value);
           
           switch (imageNumber){
-            case 1:
-              document.getElementById('N').value = 128;
-              document.getElementById('echoSpacing').value = 0.65;
-              document.getElementById('PF').value = "0.25";
-              document.getElementById('R').value = "2";
-              document.getElementById('smallDelta').value = "20";
-              document.getElementById('minTE').checked= false;
-              document.getElementById('te').value= 68;
-              break;
             case 2:
               document.getElementById('N').value = 128;
               document.getElementById('echoSpacing').value = 0.65;
@@ -639,10 +629,6 @@
           const imgElement = document.querySelector('.image-box img');
           
           switch (imageNumber){
-            case 1:
-              imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im09.png';
-              imgElement.alt = 'New Image';  
-              break;
             case 2:
               imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im25.png';
               imgElement.alt = 'New Image';  
