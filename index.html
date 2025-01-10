@@ -204,23 +204,39 @@
         </div>
         
         <select class="select_scans" id="scans" name="scans" onchange="changePreScanParams()">
-          <option value="0">                                            Available scans                                                 </option>
-          <option value="0">------------------------------------------Partial Fourier scans---------------------------------------------</option>
-          <option value="2">N=128, Echo spacing=0.65, PF=1,   GRAPPA=2, MB=1, TE=61, b-value=0, PE= AP</option>
-          <option value="3">N=128, Echo spacing=0.65, PF=7/8, GRAPPA=2, MB=1, TE=61, b-value=0, PE= AP</option>
-          <option value="4">N=128, Echo spacing=0.65, PF=6/8, GRAPPA=2, MB=1, TE=61, b-value=0, PE= AP</option>
-          <option value="5">N=128, Echo spacing=0.65, PF=5/8, GRAPPA=2, MB=1, TE=61, b-value=0, PE= AP</option>
-          <option value="0">-----------------------------------------------GRAPPA scans------------------------------------------------</option>
-          <option value="6">N=128, Echo spacing=0.65, PF=1, GRAPPA=1, MB=1, TE=103, b-value=0, PE= AP</option>
-          <option value="7">N=128, Echo spacing=0.65, PF=1, GRAPPA=2, MB=1, TE=103, b-value=0, PE= AP</option>
-          <option value="8">N=128, Echo spacing=0.65, PF=1, GRAPPA=3, MB=1, TE=103, b-value=0, PE= AP</option>
-          <option value="9">N=128, Echo spacing=0.65, PF=1, GRAPPA=4, MB=1, TE=103, b-value=0, PE= AP</option>
-          <option value="10">N=128, Echo spacing=0.65, PF=1, GRAPPA=5, MB=1, TE=103, b-value=0, PE= AP</option>
-          <option value="0">-------------------------------------------------SMS scans-------------------------------------------------</option>
-          <option value="11">N=128, Echo spacing=0.65, PF=1, GRAPPA=2, MB=1, TE=67, b-value=0, PE= AP</option>
-          <option value="12">N=128, Echo spacing=0.65, PF=1, GRAPPA=2, MB=2, TE=67, b-value=0, PE= AP</option>
-          <option value="13">N=128, Echo spacing=0.65, PF=1, GRAPPA=2, MB=3, TE=67, b-value=0, PE= AP</option>
-          <option value="14">N=128, Echo spacing=0.65, PF=1, GRAPPA=2, MB=4, TE=67, b-value=0, PE= AP</option>
+          <option value="0">Predefiend protocols</option>
+          <option value="0">-----------------------------------------No scan----------------------------------------------</option>
+          <option value="1">N=50, Echo spacing=0.5, PF=1,   GRAPPA=1, MB=1, b-value=0, PE= AP</option>
+          <option value="2">N=100, Echo spacing=0.5, PF=1,   GRAPPA=1, MB=1, b-value=0, PE= AP</option>
+          <option value="3">N=50, Echo spacing=0.5, PF=1,   GRAPPA=1, MB=1, b-value=1000, PE= AP</option>
+          <option value="4">N=100, Echo spacing=0.5, PF=1,   GRAPPA=1, MB=1, b-value=1000, PE= AP</option>
+          <option value="0">-----------------------------------------Partial Fourier scans----------------------------------------------</option>
+          <option value="42">N=128, Echo spacing=0.65, PF=1,   GRAPPA=2, MB=1, TE=65, b-value=0, PE= AP</option>
+          <option value="43">N=128, Echo spacing=0.65, PF=7/8, GRAPPA=2, MB=1, TE=55, b-value=0, PE= AP</option>
+          <option value="44">N=128, Echo spacing=0.65, PF=6/8, GRAPPA=2, MB=1, TE=45, b-value=0, PE= AP</option>
+          <option value="45">N=128, Echo spacing=0.65, PF=5/8, GRAPPA=2, MB=1, TE=37, b-value=0, PE= AP</option> 
+          <option value="0">-----------------------------------Partial Fourier scans (matching TE)--------------------------------------</option>
+          <option value="25">N=128, Echo spacing=0.65, PF=1,   GRAPPA=2, MB=1, TE=61, b-value=0, PE= AP</option>
+          <option value="26">N=128, Echo spacing=0.65, PF=7/8, GRAPPA=2, MB=1, TE=61, b-value=0, PE= AP</option>
+          <option value="27">N=128, Echo spacing=0.65, PF=6/8, GRAPPA=2, MB=1, TE=61, b-value=0, PE= AP</option>
+          <option value="28">N=128, Echo spacing=0.65, PF=5/8, GRAPPA=2, MB=1, TE=61, b-value=0, PE= AP</option>
+        <option value="0">---------------------------------------------------GRAPPA scans-----------------------------------------------</option>
+          <option value="29">N=128, Echo spacing=0.65, PF=1, GRAPPA=1, MB=1, TE=103, b-value=0, PE= AP</option>
+          <option value="30">N=128, Echo spacing=0.65, PF=1, GRAPPA=2, MB=1, TE=61, b-value=0, PE= AP</option>
+          <option value="31">N=128, Echo spacing=0.65, PF=1, GRAPPA=3, MB=1, TE=48, b-value=0, PE= AP</option>
+          <option value="32">N=128, Echo spacing=0.65, PF=1, GRAPPA=4, MB=1, TE=40, b-value=0, PE= AP</option>
+          <option value="33">N=128, Echo spacing=0.65, PF=1, GRAPPA=5, MB=1, TE=37, b-value=0, PE= AP</option>
+          <option value="0">--------------------------------------------GRAPPA scans (matching TE)--------------------------------------</option>
+          <option value="16">N=128, Echo spacing=0.65, PF=1, GRAPPA=1, MB=1, TE=103, b-value=0, PE= AP</option>
+          <option value="17">N=128, Echo spacing=0.65, PF=1, GRAPPA=2, MB=1, TE=103, b-value=0, PE= AP</option>
+          <option value="18">N=128, Echo spacing=0.65, PF=1, GRAPPA=3, MB=1, TE=103, b-value=0, PE= AP</option>
+          <option value="19">N=128, Echo spacing=0.65, PF=1, GRAPPA=4, MB=1, TE=103, b-value=0, PE= AP</option>
+          <option value="20">N=128, Echo spacing=0.65, PF=1, GRAPPA=5, MB=1, TE=103, b-value=0, PE= AP</option>
+          <option value="0">-----------------------------------------------SMS scans--------------------------------------</option>
+          <option value="21">N=128, Echo spacing=0.65, PF=1, GRAPPA=2, MB=1, TE=67, b-value=0, PE= AP</option>
+          <option value="22">N=128, Echo spacing=0.65, PF=1, GRAPPA=2, MB=2, TE=67, b-value=0, PE= AP</option>
+          <option value="23">N=128, Echo spacing=0.65, PF=1, GRAPPA=2, MB=3, TE=67, b-value=0, PE= AP</option>
+          <option value="24">N=128, Echo spacing=0.65, PF=1, GRAPPA=2, MB=4, TE=67, b-value=0, PE= AP</option>
         </select>
         
         <button onclick="pushDraw()">Plot Sequence Diagram</button>
@@ -502,7 +518,39 @@
           let imageNumber = parseInt(document.getElementById('scans').value);
           
           switch (imageNumber){
-            case 2:
+            case 1:
+              document.getElementById('N').value = 50;
+              document.getElementById('echoSpacing').value = 0.5;
+              document.getElementById('PF').value = "0.0";
+              document.getElementById('R').value = "1";
+              document.getElementById('smallDelta').value = "0";
+              document.getElementById('minTE').checked= true;
+              break;
+           case 2:
+              document.getElementById('N').value = 100;
+              document.getElementById('echoSpacing').value = 0.5;
+              document.getElementById('PF').value = "0.0";
+              document.getElementById('R').value = "1";
+              document.getElementById('smallDelta').value = "0";
+              document.getElementById('minTE').checked= true;
+              break;
+           case 3:
+              document.getElementById('N').value = 50;
+              document.getElementById('echoSpacing').value = 0.5;
+              document.getElementById('PF').value = "0.0";
+              document.getElementById('R').value = "1";
+              document.getElementById('smallDelta').value = "10";
+              document.getElementById('minTE').checked= true;
+              break;
+          case 4:
+              document.getElementById('N').value = 100;
+              document.getElementById('echoSpacing').value = 0.5;
+              document.getElementById('PF').value = "0.0";
+              document.getElementById('R').value = "1";
+              document.getElementById('smallDelta').value = "100";
+              document.getElementById('minTE').checked= true;
+              break;
+            case 25:
               document.getElementById('N').value = 128;
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
@@ -511,7 +559,7 @@
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 61;
               break;
-            case 3:
+            case 26:
               document.getElementById('N').value = 128;
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.128";
@@ -520,7 +568,7 @@
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 61;
               break;
-            case 4:
+            case 27:
               document.getElementById('N').value = 128;
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.25";
@@ -529,7 +577,7 @@
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 61;
               break;
-            case 5:
+            case 28:
               document.getElementById('N').value = 128;
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.375";
@@ -538,7 +586,7 @@
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 61;
               break;
-            case 6:
+            case 16:
               document.getElementById('N').value = 128;
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
@@ -547,7 +595,7 @@
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 103;
               break;
-            case 7:
+            case 17:
               document.getElementById('N').value = 128;
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
@@ -556,7 +604,7 @@
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 103;
               break;
-            case 8:
+            case 18:
               document.getElementById('N').value = 128;
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
@@ -565,7 +613,7 @@
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 103;
               break;
-            case 9:
+            case 19:
               document.getElementById('N').value = 128;
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
@@ -574,7 +622,7 @@
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 103;
               break;
-            case 10:
+            case 20:
               document.getElementById('N').value = 128;
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
@@ -583,7 +631,7 @@
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 103;
               break;
-            case 11:
+            case 21:
               document.getElementById('N').value = 128;
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
@@ -593,7 +641,7 @@
               document.getElementById('te').value= 67;
               document.getElementById('MB').value= "1";
               break;
-            case 12:
+            case 22:
               document.getElementById('N').value = 128;
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
@@ -603,7 +651,7 @@
               document.getElementById('te').value= 67;
               document.getElementById('MB').value= "2";
               break;
-            case 13:
+            case 23:
               document.getElementById('N').value = 128;
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
@@ -613,7 +661,7 @@
               document.getElementById('te').value= 67;
               document.getElementById('MB').value= "3";
               break;
-            case 14:
+            case 24:
               document.getElementById('N').value = 128;
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
@@ -622,6 +670,87 @@
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 67;
               document.getElementById('MB').value= "4";
+              break;
+            case 42:
+              document.getElementById('N').value = 128;
+              document.getElementById('echoSpacing').value = 0.65;
+              document.getElementById('PF').value = "0.0";
+              document.getElementById('R').value = "2";
+              document.getElementById('smallDelta').value = "0";
+              document.getElementById('minTE').checked= false;
+              document.getElementById('te').value= 65;
+              break;
+            case 43:
+              document.getElementById('N').value = 128;
+              document.getElementById('echoSpacing').value = 0.65;
+              document.getElementById('PF').value = "0.128";
+              document.getElementById('R').value = "2";
+              document.getElementById('smallDelta').value = "0";
+              document.getElementById('minTE').checked= false;
+              document.getElementById('te').value= 55;
+              break;
+            case 44:
+              document.getElementById('N').value = 128;
+              document.getElementById('echoSpacing').value = 0.65;
+              document.getElementById('PF').value = "0.25";
+              document.getElementById('R').value = "2";
+              document.getElementById('smallDelta').value = "0";
+              document.getElementById('minTE').checked= false;
+              document.getElementById('te').value= 45;
+              break;
+            case 45:
+              document.getElementById('N').value = 128;
+              document.getElementById('echoSpacing').value = 0.65;
+              document.getElementById('PF').value = "0.375";
+              document.getElementById('R').value = "2";
+              document.getElementById('smallDelta').value = "0";
+              document.getElementById('minTE').checked= false;
+              document.getElementById('te').value= 37;
+              break;
+            case 29:
+              document.getElementById('N').value = 128;
+              document.getElementById('echoSpacing').value = 0.65;
+              document.getElementById('PF').value = "0.0";
+              document.getElementById('R').value = "1";
+              document.getElementById('smallDelta').value = "0";
+              document.getElementById('minTE').checked= false;
+              document.getElementById('te').value= 103;
+              break;
+            case 30:
+              document.getElementById('N').value = 128;
+              document.getElementById('echoSpacing').value = 0.65;
+              document.getElementById('PF').value = "0.0";
+              document.getElementById('R').value = "2";
+              document.getElementById('smallDelta').value = "0";
+              document.getElementById('minTE').checked= false;
+              document.getElementById('te').value= 61;
+              break;
+            case 31:
+              document.getElementById('N').value = 128;
+              document.getElementById('echoSpacing').value = 0.65;
+              document.getElementById('PF').value = "0.0";
+              document.getElementById('R').value = "3";
+              document.getElementById('smallDelta').value = "0";
+              document.getElementById('minTE').checked= false;
+              document.getElementById('te').value= 48;
+              break;
+            case 32:
+              document.getElementById('N').value = 128;
+              document.getElementById('echoSpacing').value = 0.65;
+              document.getElementById('PF').value = "0.0";
+              document.getElementById('R').value = "4";
+              document.getElementById('smallDelta').value = "0";
+              document.getElementById('minTE').checked= false;
+              document.getElementById('te').value= 40;
+              break;
+            case 33:
+              document.getElementById('N').value = 128;
+              document.getElementById('echoSpacing').value = 0.65;
+              document.getElementById('PF').value = "0.0";
+              document.getElementById('R').value = "5";
+              document.getElementById('smallDelta').value = "0";
+              document.getElementById('minTE').checked= false;
+              document.getElementById('te').value= 37;
               break;
                   
             default:
@@ -636,60 +765,94 @@
           const imgElement = document.querySelector('.image-box img');
           
           switch (imageNumber){
-            case 2:
+            case 25:
               imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im25.png';
               imgElement.alt = 'New Image';  
               break;
-            case 3:
+            case 26:
               imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im26.png';
               imgElement.alt = 'New Image';  
               break;
-            case 4:
+            case 27:
               imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im27.png';
               imgElement.alt = 'New Image';  
               break;
-            case 5:
+            case 28:
               imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im28.png';
               imgElement.alt = 'New Image';  
               break;
-            case 6:
+            case 16:
               imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im16.png';
               imgElement.alt = 'New Image';  
               break;
-            case 7:
+            case 17:
               imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im17.png';
               imgElement.alt = 'New Image';  
               break;
-            case 8:
+            case 18:
               imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im18.png';
               imgElement.alt = 'New Image';  
               break;
-            case 9:
+            case 19:
               imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im19.png';
               imgElement.alt = 'New Image';  
               break;
-            case 10:
+            case 20:
               imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im20.png';
               imgElement.alt = 'New Image';  
               break;
-            case 11:
+            case 21:
               imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im21.png';
               imgElement.alt = 'New Image';  
               break;
-            case 12:
+            case 22:
               imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im22.png';
               imgElement.alt = 'New Image';  
               break;
-            case 13:
+            case 23:
               imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im23.png';
               imgElement.alt = 'New Image';  
               break;
-            case 14:
+            case 24:
               imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im24.png';
               imgElement.alt = 'New Image';  
-              break;                  
-            
-          
+              break;     
+            case 42:
+              imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im42.png';
+              imgElement.alt = 'New Image';  
+              break;
+            case 43:
+              imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im43.png';
+              imgElement.alt = 'New Image';  
+              break;
+            case 44:
+              imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im44.png';
+              imgElement.alt = 'New Image';  
+              break;
+            case 45:
+              imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im45.png';
+              imgElement.alt = 'New Image';  
+              break; 
+            case 29:
+              imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im29.png';
+              imgElement.alt = 'New Image';  
+              break;     
+            case 30:
+              imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im30.png';
+              imgElement.alt = 'New Image';  
+              break;
+            case 31:
+              imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im31.png';
+              imgElement.alt = 'New Image';  
+              break;
+            case 32:
+              imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im32.png';
+              imgElement.alt = 'New Image';  
+              break;
+            case 33:
+              imgElement.src = 'https://raw.githubusercontent.com/sajjad-feizollah/dMRI_sim/main/images/im33.png';
+              imgElement.alt = 'New Image';  
+              break;          
             default:
             
               imgElement.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwMCAgKJxAAAAABJRU5ErkJggg==";
