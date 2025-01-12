@@ -251,7 +251,8 @@
     </div>
 
     <script>
-      var RFDuration = 24;
+      var excRFDuration = 24;
+      var refocRFDuration = 32;
         function initializeValues() {
             // Initialize input values when the page loads
             document.getElementById('N').value = 9;
@@ -268,12 +269,19 @@
             let N = parseInt(document.getElementById('N').value) || 0;
             let PF = parseFloat(document.getElementById('PF').value) || 0;
             let R = parseInt(document.getElementById('R').value) || 0;
+            let MB = parseInt(document.getElementById('MB').value) || 0;
             let minTE = document.getElementById('minTE').checked;
+            
+            if(MB !== 1)
+            {
+              excRFDuration = 32;
+              refocRFDuration = 40;
+            }
             
             N = Math.ceil(N / R);
 
             // Calculate minimum TE required
-            let minimumTE = Math.max((RFDuration/2 + smallDelta + Math.ceil(echoSpacing*(N/2 - N*PF))),(RFDuration + smallDelta))*2;
+            let minimumTE = Math.max((refocRFDuration/2 + smallDelta + Math.ceil(echoSpacing*(N/2 - N*PF))),(excRFDuration/2 + smallDelta))*2;
 
             // Set the initial TE value in the input box if it's less than the minimum TE
             let currentTE = parseInt(document.getElementById('te').value)*10 || minimumTE;
@@ -285,9 +293,33 @@
             }
         }
 
-        function gaussian(x, amplitude, mean, stdDev) {
-            // Gaussian formula: f(x) = A * exp(-(x - mean)^2 / (2 * stdDev^2))
-            return amplitude * Math.exp(-Math.pow(x - mean, 2) / (2 * Math.pow(stdDev, 2)));
+        function plotRFpulse(x, mb, type) {
+          singleBandExcRF =[-1.94908591625969e-15,-4.52850033805974,-8.55305366410578,-10.7412649184026,-9.96856775695660,-5.60912524612014,2.26566678010148,12.8340978605526,24.6371865647383,35.8399966191699,44.5878599166082,49.3804132238543,49.3804132238543,44.5878599166082,35.8399966191699,24.6371865647383,12.8340978605526,2.26566678010148,-5.60912524612014,-9.96856775695660,-10.7412649184026,-8.55305366410578,-4.52850033805974,-1.94908591625969e-15];
+          singleBandRefocRF =[-3.89817183251938e-15,-6.70922135873792,-13.2443888850032,-18.5067380160454,-21.4237858033744,-21.0932902023516,-16.9144403315670,-8.68822791070436,3.32763062924654,18.4183414853816,35.4684717248536,53.0700224623692,69.6701173872004,83.7408756742414,93.9508322724076,99.3167289784996,99.3167289784996,93.9508322724076,83.7408756742414,69.6701173872004,53.0700224623692,35.4684717248536,18.4183414853816,3.32763062924654,-8.68822791070436,-16.9144403315670,-21.0932902023516,-21.4237858033744,-18.5067380160454,-13.2443888850032,-6.70922135873792,-3.89817183251938e-15];
+          multiBandExcRF = [0,2.88971233629478,9.43840582055964,14.4903294791419,12.8436276210604,2.45485926032386,-13.8618792958565,-29.2402585969738,-35.8217355938735,-28.6574275224118,-8.54154165577167,17.7027238463519,39.7908980950039,48.3417299413136,39.0828383805067,14.9489446275886,-14.9489446275885,-39.0828383805067,-48.3417299413136,-39.7908980950039,-17.7027238463520,8.54154165577160,28.6574275224118,35.8217355938735,29.2402585969738,13.8618792958566,-2.45485926032387,-12.8436276210604,-14.4903294791419,-9.43840582055966,-2.88971233629479,-4.49927934798557e-30];
+          multiBandRefocRF = [0,3.73946790575147,13.2015896053273,23.7570783648929,29.6089717742981,25.9921940272046,11.1215534627475,-12.7906044218773,-39.8365807179083,-62.0030456347873,-71.5944069499439,-63.7487386025332,-38.2459672698943,-2.12115047744981e-14,41.9854351756458,76.9503282078604,95.3514853148368,91.6120174090854,65.8287747451129,23.9121578846250,-23.9121578846247,-65.8287747451128,-91.6120174090854,-95.3514853148369,-76.9503282078604,-41.9854351756458,-4.24230095489963e-14,38.2459672698943,63.7487386025331,71.5944069499439,62.0030456347873,39.8365807179083,12.7906044218774,-11.1215534627476,-25.9921940272046,-29.6089717742981,-23.7570783648929,-13.2015896053273,-3.73946790575150,-8.99855869597115e-30];
+          
+          if(mb !==1)
+          {
+            if(type == 1){
+              return multiBandExcRF[x];  
+            }
+            else
+            {
+              return multiBandRefocRF[x];
+            }
+          }
+          else
+          {
+            if(type == 1){
+              return singleBandExcRF[x];  
+            }
+            else
+            {
+              return singleBandRefocRF[x];
+            }
+          }
+          
         }
 
         function drawGrids() {
@@ -347,13 +379,21 @@
             let N = parseInt(document.getElementById('N').value);
             let PF = parseFloat(document.getElementById('PF').value);
             let R = parseInt(document.getElementById('R').value);
+            let MB = parseInt(document.getElementById('MB').value);
+            
             if(smallDelta ==0)
             {
                 document.getElementById('bigDelta').value = 0;
             }
             else
             {
-                document.getElementById('bigDelta').value = (te/2 + RFDuration/2)/10;    
+                document.getElementById('bigDelta').value = (te/2 + refocRFDuration/2)/10;    
+            }
+            
+            if(MB !== 1)
+            {
+              excRFDuration = 32;
+              refocRFDuration = 40;
             }
             
             N = Math.ceil(N / R);
@@ -378,39 +418,29 @@
             ctx.stroke();
 
             // plot excitation pulse
-            let amplitude1 = 50;  // peak of the pulse (meaningless)
-            let excX = RFDuration/2;       // position of the center of the pulse
-            let excStd = 3.5;    // standard deviation of the Gaussian shape (controls width)
+            let excX = excRFDuration/2;       // position of the center of the pulse
             
             ctx.beginPath();
             ctx.strokeStyle = "black";
             ctx.lineWidth = 2;
-            for (let x = 0; x < RFDuration; x++) {
-                let y = gaussian(x, amplitude1, excX, excStd);
-                if (x === RFDuration/2) {
-                    ctx.moveTo(x, lineY - y);
-                } else {
-                    ctx.lineTo(x, lineY - y);
-                }
+            for (let x = 0; x < excRFDuration; x++) {
+                let y = plotRFpulse(x, MB, 1);
+                ctx.lineTo(x, lineY - y);
             }
             ctx.stroke();
             
             // plot refocusing pulse
-            let amplitude2 = amplitude1 * 2; // double the amplitude of the excitation pulse
-            let refocX = excX + te/2 - RFDuration/2; // place the refocusing pulse in the middle of TE
-            let refocStd = 3.5;    // same standard deviation for the Gaussian curve
-            let refocEnd = refocX + RFDuration/2; // end of the refocusing pulse
+            let refocX = excX + te/2 - refocRFDuration/2; // place the refocusing pulse in the middle of TE
+            let refocEnd = refocX + refocRFDuration/2 + 1; // end of the refocusing pulse
             
             ctx.beginPath();
             ctx.strokeStyle = "black";
             ctx.lineWidth = 2;
-            for (let x = refocX-RFDuration/2+1 ; x < refocEnd; x++) {
-                let y = gaussian(x, amplitude2, refocX, refocStd);
-                if (x === refocX) {
-                    ctx.moveTo(x, lineY - y);
-                } else {
-                    ctx.lineTo(x, lineY - y);
-                }
+            let n=0;
+            for (let x = refocX-refocRFDuration/2+1 ; n < refocRFDuration; x++) {
+                let y = plotRFpulse(n, MB, 2);
+                ctx.lineTo(x, lineY - y);
+                n++;
             }
             ctx.stroke();
 
@@ -523,6 +553,8 @@
               document.getElementById('echoSpacing').value = 0.5;
               document.getElementById('PF').value = "0.0";
               document.getElementById('R').value = "1";
+              document.getElementById('MB').value= "1";
+              document.getElementById('te').value= 0;
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= true;
               break;
@@ -531,6 +563,8 @@
               document.getElementById('echoSpacing').value = 0.5;
               document.getElementById('PF').value = "0.0";
               document.getElementById('R').value = "1";
+              document.getElementById('MB').value= "1";
+              document.getElementById('te').value= 0;
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= true;
               break;
@@ -539,6 +573,8 @@
               document.getElementById('echoSpacing').value = 0.5;
               document.getElementById('PF').value = "0.0";
               document.getElementById('R').value = "1";
+              document.getElementById('MB').value= "1";
+              document.getElementById('te').value= 0;
               document.getElementById('smallDelta').value = "10";
               document.getElementById('minTE').checked= true;
               break;
@@ -547,6 +583,8 @@
               document.getElementById('echoSpacing').value = 0.5;
               document.getElementById('PF').value = "0.0";
               document.getElementById('R').value = "1";
+              document.getElementById('MB').value= "1";
+              document.getElementById('te').value= 0;
               document.getElementById('smallDelta').value = "10";
               document.getElementById('minTE').checked= true;
               break;
@@ -555,6 +593,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
               document.getElementById('R').value = "2";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 61;
@@ -564,6 +603,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.128";
               document.getElementById('R').value = "2";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 61;
@@ -573,6 +613,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.25";
               document.getElementById('R').value = "2";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 61;
@@ -582,6 +623,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.375";
               document.getElementById('R').value = "2";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 61;
@@ -591,6 +633,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
               document.getElementById('R').value = "1";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 103;
@@ -600,6 +643,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
               document.getElementById('R').value = "2";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 103;
@@ -609,6 +653,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
               document.getElementById('R').value = "3";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 103;
@@ -618,6 +663,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
               document.getElementById('R').value = "4";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 103;
@@ -627,6 +673,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
               document.getElementById('R').value = "5";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 103;
@@ -676,6 +723,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
               document.getElementById('R').value = "2";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 65;
@@ -685,6 +733,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.128";
               document.getElementById('R').value = "2";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 55;
@@ -694,6 +743,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.25";
               document.getElementById('R').value = "2";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 45;
@@ -703,6 +753,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.375";
               document.getElementById('R').value = "2";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 37;
@@ -712,6 +763,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
               document.getElementById('R').value = "1";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 103;
@@ -721,6 +773,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
               document.getElementById('R').value = "2";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 61;
@@ -730,6 +783,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
               document.getElementById('R').value = "3";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 48;
@@ -739,6 +793,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
               document.getElementById('R').value = "4";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 40;
@@ -748,6 +803,7 @@
               document.getElementById('echoSpacing').value = 0.65;
               document.getElementById('PF').value = "0.0";
               document.getElementById('R').value = "5";
+              document.getElementById('MB').value= "1";
               document.getElementById('smallDelta').value = "0";
               document.getElementById('minTE').checked= false;
               document.getElementById('te').value= 37;
